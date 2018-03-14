@@ -7,11 +7,9 @@ package com.mycompany.cps;
 
 import com.thoughtworks.xstream.XStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.math.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.Level;
@@ -22,23 +20,12 @@ import java.util.logging.Logger;
  * @author maciek
  */
 public class Parametry implements Serializable {
-    private Double czestProbkCiaglego;
-    private Double krokProbkowania;
+    private Double czestProbkCiaglego, krokProbkowaniaCiaglego;
     private Integer liczbaPrzedzialowHistogramu;
-    private Double wartoscSrednia;
-    private Double wartoscSredniaBezwzgledna;
-    private Double wartoscSkuteczna; 
-    private Double wariancja;
-    private Double mocSrednia;
+    private Double wartoscSrednia, wartoscSredniaBezwzgledna, wartoscSkuteczna, wariancja, mocSrednia;
     private String rodzajSygnalu;
     //Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy;
-    private Double A;
-    private Double T;
-    private Double t1;
-    private Double d;
-    private Double kw;
-    private Double t2;
-    private Double n2;
+    private Double A, T, t1, d, kw, t2, n2;
 
     static Parametry wczytajParametry(String sciezkaPliku) {
         XStream xStream = new XStream();
@@ -69,7 +56,7 @@ public class Parametry implements Serializable {
     void initJakiesParametry()
     {
         czestProbkCiaglego = 100000.0;
-        krokProbkowania = 1.0/czestProbkCiaglego;
+        krokProbkowaniaCiaglego = 1.0/czestProbkCiaglego;
         liczbaPrzedzialowHistogramu = 5;
         this.A = 1.0;
         this.T = 2*Math.PI;
@@ -86,12 +73,12 @@ public class Parametry implements Serializable {
         this.czestProbkCiaglego = czestProbkCiaglego;
     }
 
-    public Double getKrokProbkowania() {
-        return krokProbkowania;
+    public Double getKrokProbkowaniaCiaglego() {
+        return krokProbkowaniaCiaglego;
     }
 
-    public void setKrokProbkowania(Double krokProbkowania) {
-        this.krokProbkowania = krokProbkowania;
+    public void setKrokProbkowaniaCiaglego(Double krokProbkowaniaCiaglego) {
+        this.krokProbkowaniaCiaglego = krokProbkowaniaCiaglego;
     }
 
     public Integer getLiczbaPrzedzialowHistogramu() {
@@ -207,7 +194,7 @@ public class Parametry implements Serializable {
     }
 
     private void ustawKrokProbkowania() {
-        this.krokProbkowania= 1.0/czestProbkCiaglego;
+        this.krokProbkowaniaCiaglego= 1.0/czestProbkCiaglego;
     }
 }
 

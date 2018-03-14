@@ -48,5 +48,19 @@ public class Punkt implements Serializable {
         this.wspolrzedne.add(y);
     }
     
+    public Punkt(int x, int y, int z)
+    {
+        this.wspolrzedne = new ArrayList<>();
+        this.wspolrzedne.add(Double.parseDouble(String.valueOf(x)));
+        this.wspolrzedne.add(Double.parseDouble(String.valueOf(y)));
+        this.wspolrzedne.add(Double.parseDouble(String.valueOf(z)));
+    }
     
+    public Punkt(Double x, Double y, Double z)
+    {
+        this.wspolrzedne = new ArrayList<>();
+        this.wspolrzedne.add(x);
+        this.wspolrzedne.add(y);
+        this.wspolrzedne.add(z);
+    }
 }
