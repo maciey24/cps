@@ -48,7 +48,7 @@ public class Wykres extends ApplicationFrame {
 //        setContentPane(chartPanel);
 //    }
 
-    public Wykres(String applicationTitle, String chartTitle, List<Double> lst1, List<Double> lst2, String s1, String s2, String osy, String osx) {
+     public Wykres(String applicationTitle, String chartTitle, List<Double> lst1, List<Double> lst2, String s1, String s2, String osy, String osx) {
         super(applicationTitle);
         JFreeChart xylineChart = ChartFactory.createScatterPlot(
                 chartTitle,
@@ -104,7 +104,7 @@ public class Wykres extends ApplicationFrame {
 //        return dataset;
 //    }
 
-    private XYDataset createDataset(List<Double> lst1, List<Double> lst2, String s1, String s2) {
+    static private XYDataset createDataset(List<Double> lst1, List<Double> lst2, String s1, String s2) {
         final XYSeries g1 = new XYSeries(s1);
         if (s2 == null) {
             s2 = " ";
@@ -127,7 +127,7 @@ public class Wykres extends ApplicationFrame {
     
     
     
-    private XYDataset createDataset(List<List<Punkt>> listaSeriiPunktow, List<String> etykiety) {
+    static private XYDataset createDataset(List<List<Punkt>> listaSeriiPunktow, List<String> etykiety) {
         
         XYSeriesCollection dataset = new XYSeriesCollection();
         for(List<Punkt> seria : listaSeriiPunktow)

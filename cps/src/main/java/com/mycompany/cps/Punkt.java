@@ -5,6 +5,7 @@
  */
 package com.mycompany.cps;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author maciek
  */
-public class Punkt {
+public class Punkt implements Serializable {
     private ArrayList<Double> wspolrzedne;
 
     public void setWspolrzedne(ArrayList<Double> wspolrzedne) {
@@ -23,24 +24,24 @@ public class Punkt {
         return wspolrzedne;
     }
     
-    Punkt()
+    public Punkt()
     {
         this.wspolrzedne = new ArrayList<>();
     }
     
-    Punkt(List<Double> listaWspolrzednych)
+    public Punkt(List<Double> listaWspolrzednych)
     {
         this.wspolrzedne = (ArrayList<Double>) listaWspolrzednych;
     }
     
-    Punkt(int x, int y)
+    public Punkt(int x, int y)
     {
         this.wspolrzedne = new ArrayList<>();
         this.wspolrzedne.add(Double.parseDouble(String.valueOf(x)));
         this.wspolrzedne.add(Double.parseDouble(String.valueOf(y)));
     }
     
-    Punkt(Double x, Double y)
+    public Punkt(Double x, Double y)
     {
         this.wspolrzedne = new ArrayList<>();
         this.wspolrzedne.add(x);
