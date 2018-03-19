@@ -25,7 +25,7 @@ public class Parametry implements Serializable {
     private Double wartoscSrednia, wartoscSredniaBezwzgledna, wartoscSkuteczna, wariancja, mocSrednia;
     private String rodzajSygnalu;
     //Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy;
-    private Double A, T, t1, d, kw, t2, n2;
+private Double A, T, t1, d, kw, t2, n2;
 
     static Parametry wczytajParametry(String sciezkaPliku) {
         XStream xStream = new XStream();
@@ -36,9 +36,19 @@ public class Parametry implements Serializable {
             zawartoscPliku =  new String(encoded, "UTF-8");
         } catch (IOException ex) {
             Logger.getLogger(Parametry.class.getName()).log(Level.SEVERE, null, ex);
+            Parametry p = new Parametry();
+            p.initJakiesParametry();
+            p.zapiszParametry(sciezkaPliku);
+            System.err.println("Nie znaleziono pliku z parametrami! Zostały wczytane domyślne ustawienia programu");
+            return p;
         }
         Parametry p = (Parametry) xStream.fromXML(zawartoscPliku);
         p.ustawKrokProbkowania();
+        try {
+            p.asercjaPoczatkowa();
+        } catch (ParametryAsercjaException ex) {
+            System.err.println(ex.getMessage());
+        }
         return p;
     }
     
@@ -56,13 +66,13 @@ public class Parametry implements Serializable {
     void initJakiesParametry()
     {
         czestProbkCiaglego = 100000.0;
-        krokProbkowaniaCiaglego = 1.0/czestProbkCiaglego;
         liczbaPrzedzialowHistogramu = 5;
         this.A = 1.0;
         this.T = 2*Math.PI;
         t1 = 0.5;
         d = 6.0;
         kw = 0.5;
+        this.setRodzajSygnalu("S3");
     }
 
     public Double getCzestProbkCiaglego() {
@@ -195,6 +205,27 @@ public class Parametry implements Serializable {
 
     private void ustawKrokProbkowania() {
         this.krokProbkowaniaCiaglego= 1.0/czestProbkCiaglego;
+    }
+
+    private void asercjaPoczatkowa() throws ParametryAsercjaException {
+        if(this.getD().compareTo(0.0)<0)
+        {
+            throw new ParametryAsercjaException("czas trwania sygnału powinien być liczbą rzeczywistą większą od 0!");
+        }
+        if(this.getKw().compareTo(0.0)<0 || this.getKw().compareTo(1.0)>0)
+        {
+            throw new ParametryAsercjaException("współczynnik wypełnienia sygnału powinien być liczbą z przedziału [0.0 ; 1.0]");
+        }
+        if(this.getRodzajSygnalu().charAt(0)!='S' || (Integer.parseInt(this.getRodzajSygnalu().substring(1))>0&& Integer.parseInt(this.getRodzajSygnalu().substring(1))<12))
+        {
+            throw new ParametryAsercjaException("rodzaj sygnału powinien być określony przez ciąg znaków: [S][1-11]");
+        }
+    }
+
+    private static class ParametryAsercjaException extends Exception {
+        public ParametryAsercjaException(String message) {
+            super(message);
+        }
     }
 }
 

@@ -23,6 +23,7 @@ public class zadJ {
         Parametry p = Parametry.wczytajParametry(sciezkaPliku);
         SygnalGenerator sygnal = wybierzSygnal(p);
         dodajSygnal(sygnal, p);
+        
         Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 1.", "Wykres", listaSygnalow, etykietySygnalow);
     }
 
@@ -45,8 +46,10 @@ public class zadJ {
                 sygnal = new SygSinusoidalnyWyprostowanyDwupolowkowoGenerator();
                 break;
             case "S6":
+                sygnal = new SygProstokatnyGenerator();
                 break;
             case "S7":
+                sygnal = new SygProstokatnySymetrycznyGenerator();
                 break;
             case "S8":
                 break;
