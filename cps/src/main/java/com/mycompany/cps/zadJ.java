@@ -52,8 +52,10 @@ public class zadJ {
                 sygnal = new SygProstokatnySymetrycznyGenerator();
                 break;
             case "S8":
+                sygnal = new SygTrojkatnyGenerator();
                 break;
             case "S9":
+                sygnal = new SygSkokJednostkowyGenerator();
                 break;
             case "S10":
                 break;

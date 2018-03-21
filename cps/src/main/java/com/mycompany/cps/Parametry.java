@@ -20,20 +20,21 @@ import java.util.logging.Logger;
  * @author maciek
  */
 public class Parametry implements Serializable {
+
     private Double czestProbkCiaglego, krokProbkowaniaCiaglego;
     private Integer liczbaPrzedzialowHistogramu;
     private Double wartoscSrednia, wartoscSredniaBezwzgledna, wartoscSkuteczna, wariancja, mocSrednia;
     private String rodzajSygnalu;
     //Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy;
-private Double A, T, t1, d, kw, t2, n2;
+    private Double A, T, t1, d, kw, t2, n2, ts;
 
     static Parametry wczytajParametry(String sciezkaPliku) {
         XStream xStream = new XStream();
         String zawartoscPliku = null;
-        
+
         try {
             byte[] encoded = Files.readAllBytes(Paths.get(sciezkaPliku));
-            zawartoscPliku =  new String(encoded, "UTF-8");
+            zawartoscPliku = new String(encoded, "UTF-8");
         } catch (IOException ex) {
             Logger.getLogger(Parametry.class.getName()).log(Level.SEVERE, null, ex);
             Parametry p = new Parametry();
@@ -51,9 +52,8 @@ private Double A, T, t1, d, kw, t2, n2;
         }
         return p;
     }
-    
-    void zapiszParametry(String sciezkaPliku)
-    {
+
+    void zapiszParametry(String sciezkaPliku) {
         XStream xstream = new XStream();
         String zawartoscPliku = xstream.toXML(this);
         try (PrintWriter out = new PrintWriter(sciezkaPliku)) {
@@ -62,13 +62,12 @@ private Double A, T, t1, d, kw, t2, n2;
             Logger.getLogger(Parametry.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    void initJakiesParametry()
-    {
+
+    void initJakiesParametry() {
         czestProbkCiaglego = 100000.0;
         liczbaPrzedzialowHistogramu = 5;
         this.A = 1.0;
-        this.T = 2*Math.PI;
+        this.T = 2 * Math.PI;
         t1 = 0.5;
         d = 6.0;
         kw = 0.5;
@@ -195,6 +194,14 @@ private Double A, T, t1, d, kw, t2, n2;
         this.t2 = t2;
     }
 
+    public Double getTs() {
+        return ts;
+    }
+
+    public void setTs(Double ts) {
+        this.ts = ts;
+    }
+
     public Double getN2() {
         return n2;
     }
@@ -204,28 +211,28 @@ private Double A, T, t1, d, kw, t2, n2;
     }
 
     private void ustawKrokProbkowania() {
-        this.krokProbkowaniaCiaglego= 1.0/czestProbkCiaglego;
+        this.krokProbkowaniaCiaglego = 1.0 / czestProbkCiaglego;
     }
 
     private void asercjaPoczatkowa() throws ParametryAsercjaException {
-        if(this.getD().compareTo(0.0)<0)
-        {
+        if (this.getD().compareTo(0.0) < 0) {
             throw new ParametryAsercjaException("czas trwania sygnału powinien być liczbą rzeczywistą większą od 0!");
         }
-        if(this.getKw().compareTo(0.0)<0 || this.getKw().compareTo(1.0)>0)
-        {
+        if (this.getKw().compareTo(0.0) < 0 || this.getKw().compareTo(1.0) > 0) {
             throw new ParametryAsercjaException("współczynnik wypełnienia sygnału powinien być liczbą z przedziału [0.0 ; 1.0]");
         }
-        if(this.getRodzajSygnalu().charAt(0)!='S' || (Integer.parseInt(this.getRodzajSygnalu().substring(1))>0&& Integer.parseInt(this.getRodzajSygnalu().substring(1))<12))
-        {
+        if (this.getRodzajSygnalu().charAt(0) != 'S' || (Integer.parseInt(this.getRodzajSygnalu().substring(1)) > 0 && Integer.parseInt(this.getRodzajSygnalu().substring(1)) < 12)) {
             throw new ParametryAsercjaException("rodzaj sygnału powinien być określony przez ciąg znaków: [S][1-11]");
+        }
+        if ("S9".equals(this.getRodzajSygnalu()) && (this.getTs().compareTo(this.getT1()) < 0.0 || this.getTs().compareTo(this.getT1() + this.getD()) > 1.0)) {
+            throw new ParametryAsercjaException("czas skoku musi zawierać się w przedziale od czasu początkowego do czasu końca trwania sygnału");
         }
     }
 
     private static class ParametryAsercjaException extends Exception {
+
         public ParametryAsercjaException(String message) {
             super(message);
         }
     }
 }
-
