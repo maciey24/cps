@@ -33,6 +33,19 @@ public class Wykres extends ApplicationFrame {
         chartPanel.setPreferredSize(new java.awt.Dimension(600, 600));
         setContentPane(chartPanel);
     }
+    public Wykres(String tytulOkna, String tytul, List<Sygnal> listaSygnalow) {
+        super(tytulOkna);
+        JFreeChart xylineChart = ChartFactory.createScatterPlot(
+                tytul,
+                "x",
+                "y",
+                createDataset(listaSygnalow),
+                PlotOrientation.VERTICAL,
+                true, true, false);
+        ChartPanel chartPanel = new ChartPanel(xylineChart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(600, 600));
+        setContentPane(chartPanel);
+    }
 //
 //    public Wykres(String applicationTitle, String chartTitle, String osx, String osy, String ser1, String ser2, List<Punkt> pnts) {
 //        super(applicationTitle);
@@ -125,6 +138,20 @@ public class Wykres extends ApplicationFrame {
         return dataset;
     }
     
+    static private XYDataset createDataset(List<Sygnal> listaSygnalow) {
+        
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        for(Sygnal syg: listaSygnalow)
+        {
+            XYSeries s = new XYSeries(syg.getNazwa());
+            for(Punkt p : syg.getList())
+            {
+                s.add(p.getWspolrzedne().get(0), p.getWspolrzedne().get(1));
+            }
+            dataset.addSeries(s);
+        }
+        return dataset;
+    }
     
     
     static private XYDataset createDataset(List<List<Punkt>> listaSeriiPunktow, List<String> etykiety) {
@@ -143,9 +170,9 @@ public class Wykres extends ApplicationFrame {
         return dataset;
     }
     
-    static void rysuj(String tytulOkna, String tytul, List<List<Punkt>> lst, List<String> etykiety)
+    static void rysuj(String tytulOkna, String tytul, List<Sygnal> listaSygnalow)
     {
-        Wykres chart = new Wykres(tytulOkna, tytul, lst, etykiety);
+        Wykres chart = new Wykres(tytulOkna, tytul, listaSygnalow);
         chart.pack();
         RefineryUtilities.centerFrameOnScreen(chart);
         chart.setVisible(true);

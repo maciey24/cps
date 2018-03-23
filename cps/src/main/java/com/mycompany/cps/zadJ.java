@@ -15,60 +15,72 @@ import java.util.List;
  */
 public class zadJ {
 
-    static ArrayList<List<Punkt>> listaSygnalow = new ArrayList<>();
+    static ArrayList<Sygnal> listaSygnalow = new ArrayList<>();
     static ArrayList<String> etykietySygnalow = new ArrayList<>();
     static String sciezkaPliku = "parametry.config";
 
     public static void main(String[] args) {
         Parametry p = Parametry.wczytajParametry(sciezkaPliku);
-        SygnalGenerator sygnal = wybierzSygnal(p);
-        dodajSygnal(sygnal, p);
+        Sygnal s1;
+        if(p.isCzyWczytacZPliku())
+        {
+            s1 = Sygnal.wczytajZPliku(p.getSciezkaWczytywania());
+        }
+        else
+        {
+            SygnalGenerator generatorSygnalu = wybierzSygnal(p);
+            s1 = new Sygnal(generatorSygnalu, p);
+        }
+        dodajSygnal(s1);
+        if(p.isCzyZapisacDoPliku())
+        {
+            s1.zapiszDoPliku(p.getSciezkaZapisywania());
+        }
         
-        Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 1.", "Wykres", listaSygnalow, etykietySygnalow);
+        Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 1.", "Wykres", listaSygnalow);
     }
-
+    
     private static SygnalGenerator wybierzSygnal(Parametry p){
-        SygnalGenerator sygnal = null;
+        SygnalGenerator generatorSygnalu = null;
         switch (p.getRodzajSygnalu()) {
             case "S1":
-                sygnal = new SygSzumORozkladzieJednostajnymGenerator();
+                generatorSygnalu = new SygSzumORozkladzieJednostajnymGenerator();
                 break;
             case "S2":
-                sygnal = new SygSzumORozkladzieNormalnymGenerator();
+                generatorSygnalu = new SygSzumORozkladzieNormalnymGenerator();
                 break;
             case "S3":
-                sygnal = new SygSinusoidalnyGenerator();
+                generatorSygnalu = new SygSinusoidalnyGenerator();
                 break;
             case "S4":
-                sygnal = new SygSinusoidalnyWyprostowanyJednopolowkowoGenerator();
+                generatorSygnalu = new SygSinusoidalnyWyprostowanyJednopolowkowoGenerator();
                 break;
             case "S5":
-                sygnal = new SygSinusoidalnyWyprostowanyDwupolowkowoGenerator();
+                generatorSygnalu = new SygSinusoidalnyWyprostowanyDwupolowkowoGenerator();
                 break;
             case "S6":
-                sygnal = new SygProstokatnyGenerator();
+                generatorSygnalu = new SygProstokatnyGenerator();
                 break;
             case "S7":
-                sygnal = new SygProstokatnySymetrycznyGenerator();
+                generatorSygnalu = new SygProstokatnySymetrycznyGenerator();
                 break;
             case "S8":
-                sygnal = new SygTrojkatnyGenerator();
+                generatorSygnalu = new SygTrojkatnyGenerator();
                 break;
             case "S9":
-                sygnal = new SygSkokJednostkowyGenerator();
+                generatorSygnalu = new SygSkokJednostkowyGenerator();
                 break;
             case "S10":
-                sygnal = new SygImpulsJednostkowyGenerator();
+                generatorSygnalu = new SygImpulsJednostkowyGenerator();
                 break;
             case "S11":
-                sygnal = new SygSzumImpulsowyGenerator();
+                generatorSygnalu = new SygSzumImpulsowyGenerator();
                 break;
         }
-        return sygnal;
+        return generatorSygnalu;
     }
 
-    private static void dodajSygnal(SygnalGenerator sygnal, Parametry p) {        
-        listaSygnalow.add(sygnal.sygnal(p));
-        etykietySygnalow.add(sygnal.getNazwa());
+    private static void dodajSygnal(Sygnal s) {        
+        listaSygnalow.add(s);
     }
 }

@@ -33,8 +33,42 @@ public class Parametry implements Serializable {
     private Integer liczbaPrzedzialowHistogramu;
     private Double wartoscSrednia, wartoscSredniaBezwzgledna, wartoscSkuteczna, wariancja, mocSrednia;
     private String rodzajSygnalu;
+    private String sciezkaWczytywania, sciezkaZapisywania;
+
+    public String getSciezkaZapisywania() {
+        return sciezkaZapisywania;
+    }
+
+    public void setSciezkaZapisywania(String sciezkaZapisywania) {
+        this.sciezkaZapisywania = sciezkaZapisywania;
+    }
+
+    public String getSciezkaWczytywania() {
+        return sciezkaWczytywania;
+    }
+
+    public void setSciezkaWczytywania(String sciezkaWczytywania) {
+        this.sciezkaWczytywania = sciezkaWczytywania;
+    }
     //Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy;
     private Double A, T, t1, d, kw, t2, n2, ts, f, p;
+    private boolean czyWczytacZPliku, czyZapisacDoPliku;
+
+    public boolean isCzyWczytacZPliku() {
+        return czyWczytacZPliku;
+    }
+
+    public void setCzyWczytacZPliku(boolean czyWczytacZPliku) {
+        this.czyWczytacZPliku = czyWczytacZPliku;
+    }
+
+    public boolean isCzyZapisacDoPliku() {
+        return czyZapisacDoPliku;
+    }
+
+    public void setCzyZapisacDoPliku(boolean czyZapisacDoPliku) {
+        this.czyZapisacDoPliku = czyZapisacDoPliku;
+    }
 
     public Double getP() {
         return p;
@@ -69,6 +103,7 @@ public class Parametry implements Serializable {
         }
         Parametry p = (Parametry) xStream.fromXML(zawartoscPliku);
         p.ustawKrokProbkowania();
+        p.setRodzajSygnalu(p.getRodzajSygnalu().toUpperCase());
         try {
             p.asercjaPoczatkowa();
         } catch (ParametryAsercjaException ex) {
@@ -89,17 +124,19 @@ public class Parametry implements Serializable {
     }
 
     void initJakiesParametry() {
-        czestProbkCiaglego = 100000.0;
+        czestProbkCiaglego = 10000.0;
         liczbaPrzedzialowHistogramu = 5;
         this.A = 1.0;
         this.T = 2 * Math.PI;
         t1 = 0.5;
-        d = 6.0;
+        d = 7.0;
         kw = 0.5;
-        this.setTs(5.0);
+        this.setTs(3.5);
         this.setF(1.0);
         this.setRodzajSygnalu("S3");
         this.setP(0.05);
+        this.setCzyWczytacZPliku(false);
+        this.setCzyZapisacDoPliku(true);
     }
 
     public Double getCzestProbkCiaglego() {
