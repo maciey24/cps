@@ -21,12 +21,36 @@ import java.util.logging.Logger;
  */
 public class Parametry implements Serializable {
 
-    private Double czestProbkCiaglego, krokProbkowaniaCiaglego;
+    private Double czestProbkCiaglego, krokProbkowaniaCiaglego, krokProbkowaniaDyskretnego;
+
+    public Double getKrokProbkowaniaDyskretnego() {
+        return krokProbkowaniaDyskretnego;
+    }
+
+    public void setKrokProbkowaniaDyskretnego(Double krokProbkowaniaDyskretnego) {
+        this.krokProbkowaniaDyskretnego = krokProbkowaniaDyskretnego;
+    }
     private Integer liczbaPrzedzialowHistogramu;
     private Double wartoscSrednia, wartoscSredniaBezwzgledna, wartoscSkuteczna, wariancja, mocSrednia;
     private String rodzajSygnalu;
     //Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy;
-    private Double A, T, t1, d, kw, t2, n2, ts;
+    private Double A, T, t1, d, kw, t2, n2, ts, f, p;
+
+    public Double getP() {
+        return p;
+    }
+
+    public void setP(Double p) {
+        this.p = p;
+    }
+
+    public Double getF() {
+        return f;
+    }
+
+    public void setF(Double f) {
+        this.f = f;
+    }
 
     static Parametry wczytajParametry(String sciezkaPliku) {
         XStream xStream = new XStream();
@@ -49,6 +73,7 @@ public class Parametry implements Serializable {
             p.asercjaPoczatkowa();
         } catch (ParametryAsercjaException ex) {
             System.err.println(ex.getMessage());
+            return null;
         }
         return p;
     }
@@ -71,7 +96,10 @@ public class Parametry implements Serializable {
         t1 = 0.5;
         d = 6.0;
         kw = 0.5;
+        this.setTs(5.0);
+        this.setF(1.0);
         this.setRodzajSygnalu("S3");
+        this.setP(0.05);
     }
 
     public Double getCzestProbkCiaglego() {
@@ -212,6 +240,7 @@ public class Parametry implements Serializable {
 
     private void ustawKrokProbkowania() {
         this.krokProbkowaniaCiaglego = 1.0 / czestProbkCiaglego;
+        this.krokProbkowaniaDyskretnego = 1.0 / this.getF();
     }
 
     private void asercjaPoczatkowa() throws ParametryAsercjaException {
@@ -221,11 +250,21 @@ public class Parametry implements Serializable {
         if (this.getKw().compareTo(0.0) < 0 || this.getKw().compareTo(1.0) > 0) {
             throw new ParametryAsercjaException("współczynnik wypełnienia sygnału powinien być liczbą z przedziału [0.0 ; 1.0]");
         }
-        if (this.getRodzajSygnalu().charAt(0) != 'S' || (Integer.parseInt(this.getRodzajSygnalu().substring(1)) > 0 && Integer.parseInt(this.getRodzajSygnalu().substring(1)) < 12)) {
+        if (this.getRodzajSygnalu().charAt(0) != 'S' || !(Integer.parseInt(this.getRodzajSygnalu().substring(1)) > 0 && Integer.parseInt(this.getRodzajSygnalu().substring(1)) < 12)) {
             throw new ParametryAsercjaException("rodzaj sygnału powinien być określony przez ciąg znaków: [S][1-11]");
         }
-        if ("S9".equals(this.getRodzajSygnalu()) && (this.getTs().compareTo(this.getT1()) < 0.0 || this.getTs().compareTo(this.getT1() + this.getD()) > 1.0)) {
+        if (("S9".equals(this.getRodzajSygnalu())
+                || "S10".equals(this.getRodzajSygnalu())
+                ) && 
+                (this.getTs().compareTo(this.getT1()) < 0.0 || 
+                this.getTs().compareTo(this.getT1() + this.getD()) > 0.0)) {
             throw new ParametryAsercjaException("czas skoku musi zawierać się w przedziale od czasu początkowego do czasu końca trwania sygnału");
+        }
+        if (("S11".equals(this.getRodzajSygnalu()))
+                 && 
+                (this.getP().compareTo(0.0) < 0.0 || 
+                this.getTs().compareTo(1.0 + this.getD()) > 0.0)) {
+            throw new ParametryAsercjaException("Prawdopodobieństwo musi być liczbą rzeczywistą z przedziału [0 ; 1]");
         }
     }
 

@@ -13,10 +13,10 @@ import java.util.ArrayList;
  *
  * @author maciek
  */
-public class SygSkokJednostkowyGenerator extends SygnalGenerator{
-    public SygSkokJednostkowyGenerator()
+public class SygImpulsJednostkowyGenerator extends SygnalGenerator{
+    public SygImpulsJednostkowyGenerator()
     {
-        this.nazwa = "Skok jednostkowy";
+        this.nazwa = "Impuls jednostkowy";
     }
     
     @Override
@@ -24,14 +24,14 @@ public class SygSkokJednostkowyGenerator extends SygnalGenerator{
     {
         ArrayList<Punkt> res = new ArrayList<>();
         Double t;
-        for(t = p.getT1(); t<p.getTs(); t+=p.getKrokProbkowaniaCiaglego())
+        for(t = p.getT1(); t<p.getTs(); t+=p.getKrokProbkowaniaDyskretnego())
         {
             res.add(new Punkt(t, 0.0));
         }
-        res.add(new Punkt(t, 0.5*p.getA()));
-        for(t+=p.getKrokProbkowaniaCiaglego(); t<(p.getT1()+p.getD()); t+=p.getKrokProbkowaniaCiaglego())
+        res.add(new Punkt(t, p.getA()));
+        for(t+=p.getKrokProbkowaniaDyskretnego(); t<(p.getT1()+p.getD()); t+=p.getKrokProbkowaniaDyskretnego())
         {
-            res.add(new Punkt(t, p.getA()));
+            res.add(new Punkt(t,0.0));
         }
         return res;
     }

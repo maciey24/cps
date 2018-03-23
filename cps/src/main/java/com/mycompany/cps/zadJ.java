@@ -58,8 +58,10 @@ public class zadJ {
                 sygnal = new SygSkokJednostkowyGenerator();
                 break;
             case "S10":
+                sygnal = new SygImpulsJednostkowyGenerator();
                 break;
             case "S11":
+                sygnal = new SygSzumImpulsowyGenerator();
                 break;
         }
         return sygnal;
