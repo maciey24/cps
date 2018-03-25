@@ -26,6 +26,7 @@ public class SygSzumImpulsowyGenerator extends SygnalGenerator{
         Double t;
         for(t = p.getT1(); t<p.getT1()+p.getD(); t+=p.getKrokProbkowaniaDyskretnego())
         {
+//            t = round(t, Double.toString(Math.floor(p.getCzestProbkCiaglego())).length(), false);
             res.add(new Punkt(t, (rand(0, 1)<=p.getP()) ? p.getA() : 0.0));
         }
         return res;

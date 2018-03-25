@@ -8,6 +8,8 @@ package com.mycompany.cps.syg;
 import com.mycompany.cps.Parametry;
 import com.mycompany.cps.Punkt;
 import static java.lang.Math.sqrt;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -65,4 +67,14 @@ public abstract class SygnalGenerator {
             }
         }while(true);
     }
+    
+//    protected static Double round(double value, int places, boolean br) {
+//        if (places < 0) throw new IllegalArgumentException();
+//        BigDecimal bd = new BigDecimal(Double.toString(value));
+//        bd = bd.setScale(places, RoundingMode.HALF_UP);
+//        if(br) 
+//            return bd.doubleValue();
+//        else
+//            return round(bd.doubleValue(), places-1, true);
+//    }
 }

@@ -25,6 +25,7 @@ public class SygSinusoidalnyGenerator extends SygnalGenerator{
         ArrayList<Punkt> res = new ArrayList<>();
         for(Double t = p.getT1(); t<(p.getT1()+p.getD()); t+=p.getKrokProbkowaniaCiaglego())
         {
+//            t = round(t, Double.toString(Math.floor(p.getCzestProbkCiaglego())).length(), false);
             res.add(new Punkt(t, p.getA() * Math.sin( ((2.0*Math.PI)/p.getT())*(t-p.getT1()))));
         }
         return res;

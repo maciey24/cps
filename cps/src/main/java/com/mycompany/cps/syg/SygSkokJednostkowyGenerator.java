@@ -26,11 +26,13 @@ public class SygSkokJednostkowyGenerator extends SygnalGenerator{
         Double t;
         for(t = p.getT1(); t<p.getTs(); t+=p.getKrokProbkowaniaCiaglego())
         {
+//            t = round(t, Double.toString(Math.floor(p.getCzestProbkCiaglego())).length(), false);
             res.add(new Punkt(t, 0.0));
         }
         res.add(new Punkt(t, 0.5*p.getA()));
         for(t+=p.getKrokProbkowaniaCiaglego(); t<(p.getT1()+p.getD()); t+=p.getKrokProbkowaniaCiaglego())
         {
+//            t = round(t, Double.toString(Math.floor(p.getCzestProbkCiaglego())).length(), false);
             res.add(new Punkt(t, p.getA()));
         }
         return res;

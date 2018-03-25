@@ -19,50 +19,62 @@ public class zadJ {
 
     static ArrayList<Sygnal> listaSygnalow = new ArrayList<>();
     static ArrayList<String> etykietySygnalow = new ArrayList<>();
-    static String sciezkaPliku = "parametry.config";
+    static String sciezkaParametrow1 = "syg1.config";
+    static String sciezkaParametrow2 = "syg2.config";
 
     public static void main(String[] args) {
-
-        Sygnal s1;
-        Sygnal s2;
-        Parametry p = Parametry.wczytajParametry(sciezkaPliku);
-        SygnalGenerator gssin = new SygSinusoidalnyWyprostowanyDwupolowkowoGenerator();
-        s1 = new Sygnal(gssin, p);
-        SygnalGenerator gspr = new SygTrojkatnyGenerator();
-        s2 = new Sygnal(gspr, p);
-
-        Dzialanie d = new Dodawanie();
-
-        Sygnal wynik = Sygnal.dzialanie(s1, s2, d);
+        Parametry p1 = Parametry.wczytajParametry(sciezkaParametrow1);
+        Parametry p2 = Parametry.wczytajParametry(sciezkaParametrow2);
+        
+        Sygnal wynik = null;
+        SygnalGenerator sg1 = wybierzSygnal(p1);
+        SygnalGenerator sg2 = wybierzSygnal(p2);
+        Sygnal s1 = stworzSygnal(p1, sg1);
+        Sygnal s2 = stworzSygnal(p2, sg2);
+         
+        Dzialanie d = wybierzDzialanie(p2);
+        
+        if(d!=null) 
+        {
+            wynik = Sygnal.dzialanie(s1, s2, d);
+        }
+        
         dodajSygnal(s1);
         dodajSygnal(s2);
         dodajSygnal(wynik);
         Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 1.", "Wykres", listaSygnalow);
-
+        Histogram.rysuj(s1, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału (" + s1.getNazwa() + ") dla " + p1.getLiczbaPrzedzialowHistogramu() +" przedziałów. ", p1.getLiczbaPrzedzialowHistogramu());
         
-//        {
-//        Parametry p = Parametry.wczytajParametry(sciezkaPliku);
-//        Sygnal s1;
-//        if(p.isCzyWczytacZPliku())
-//        {
-//            s1 = Sygnal.wczytajZPliku(p.getSciezkaWczytywania());
-//        }
-//        else
-//        {
-//            SygnalGenerator generatorSygnalu = wybierzSygnal(p);
-//            s1 = new Sygnal(generatorSygnalu, p);
-//        }
-//        dodajSygnal(s1);
-//        if(p.isCzyZapisacDoPliku())
-//        {
-//            s1.zapiszDoPliku(p.getSciezkaZapisywania());
-//        }
-//        
-//        Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 1.", "Wykres", listaSygnalow);
-//        }
+        if(p1.isCzyZapisacDoPliku())
+        {
+            if(s1!=null) 
+            {
+                s1.zapiszDoPliku(p1.getSciezkaZapisywania());
+            }
+        }
+        if(p2.isCzyZapisacDoPliku())
+        {
+            if(s2!=null) 
+            {
+                s2.zapiszDoPliku(p2.getSciezkaZapisywania());
+            }
+        }
+        if(p2.isCzyWynikDoPliku())
+        {
+            if(wynik!=null) 
+            {
+                wynik.zapiszDoPliku(p2.getSciezkaWyniku());
+            }
+        }
+        
+        
     }
 
     private static SygnalGenerator wybierzSygnal(Parametry p) {
+        if(p == null) return null;
+        if(p.isCzyWczytacZPliku()) return null;
+        if("0".equals(p.getRodzajSygnalu())) return null;
+        
         SygnalGenerator generatorSygnalu = null;
         switch (p.getRodzajSygnalu()) {
             case "S1":
@@ -103,6 +115,43 @@ public class zadJ {
     }
 
     private static void dodajSygnal(Sygnal s) {
+        if (s==null) return;
         listaSygnalow.add(s);
+    }
+
+    private static Dzialanie wybierzDzialanie(Parametry p) {
+        if(p == null) return null;
+        if("0".equals(p.getRodzajSygnalu())) return null;
+        if("0".equals(p.getRodzajOperacji())) return null;
+                
+        Dzialanie dz = null;
+        switch (p.getRodzajOperacji()) {
+            case "+":
+                dz = new Dodawanie();
+                break;
+            case "-":
+                dz = new Odejmowanie();
+                break;
+            case "/":
+                dz = new Dzielenie();
+                break;
+            case "*":
+                dz = new Mnozenie();
+                break;
+        }
+        return dz;
+    }
+
+    private static Sygnal stworzSygnal(Parametry p, SygnalGenerator sg) {
+        Sygnal s = null;
+        if(p.isCzyWczytacZPliku())
+        {
+            s = Sygnal.wczytajZPliku(p.getSciezkaWczytywania());
+        }
+        else if(!"0".equals(p.getRodzajSygnalu()))
+        {
+            s = new Sygnal(sg, p);
+        }
+        return s;
     }
 }

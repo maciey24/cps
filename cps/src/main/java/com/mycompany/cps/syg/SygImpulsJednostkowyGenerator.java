@@ -26,11 +26,13 @@ public class SygImpulsJednostkowyGenerator extends SygnalGenerator{
         Double t;
         for(t = p.getT1(); t<p.getTs(); t+=p.getKrokProbkowaniaDyskretnego())
         {
+//            t = round(t, Double.toString(Math.floor(p.getCzestProbkCiaglego())).length(), false);
             res.add(new Punkt(t, 0.0));
         }
         res.add(new Punkt(t, p.getA()));
         for(t+=p.getKrokProbkowaniaDyskretnego(); t<(p.getT1()+p.getD()); t+=p.getKrokProbkowaniaDyskretnego())
         {
+//            t = round(t, Double.toString(Math.floor(p.getCzestProbkCiaglego())).length(), false);
             res.add(new Punkt(t,0.0));
         }
         return res;

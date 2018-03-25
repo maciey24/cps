@@ -32,8 +32,24 @@ public class Parametry implements Serializable {
     }
     private Integer liczbaPrzedzialowHistogramu;
     private Double wartoscSrednia, wartoscSredniaBezwzgledna, wartoscSkuteczna, wariancja, mocSrednia;
-    private String rodzajSygnalu;
-    private String sciezkaWczytywania, sciezkaZapisywania;
+    private String rodzajSygnalu, rodzajOperacji;
+
+    public String getRodzajOperacji() {
+        return rodzajOperacji;
+    }
+
+    public void setRodzajOperacji(String rodzajOperacji) {
+        this.rodzajOperacji = rodzajOperacji;
+    }
+    private String sciezkaWczytywania, sciezkaZapisywania, sciezkaWyniku;
+
+    public String getSciezkaWyniku() {
+        return sciezkaWyniku;
+    }
+
+    public void setSciezkaWyniku(String sciezkaWyniku) {
+        this.sciezkaWyniku = sciezkaWyniku;
+    }
 
     public String getSciezkaZapisywania() {
         return sciezkaZapisywania;
@@ -52,7 +68,15 @@ public class Parametry implements Serializable {
     }
     //Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy;
     private Double A, T, t1, d, kw, t2, n2, ts, f, p;
-    private boolean czyWczytacZPliku, czyZapisacDoPliku;
+    private boolean czyWczytacZPliku, czyZapisacDoPliku, czyWynikDoPliku;
+
+    public boolean isCzyWynikDoPliku() {
+        return czyWynikDoPliku;
+    }
+
+    public void setCzyWynikDoPliku(boolean czyWynikDoPliku) {
+        this.czyWynikDoPliku = czyWynikDoPliku;
+    }
 
     public boolean isCzyWczytacZPliku() {
         return czyWczytacZPliku;
@@ -137,6 +161,10 @@ public class Parametry implements Serializable {
         this.setP(0.05);
         this.setCzyWczytacZPliku(false);
         this.setCzyZapisacDoPliku(true);
+        this.setRodzajOperacji("+");
+        this.setSciezkaWczytywania("s0.bin");
+        this.setSciezkaZapisywania("s0.bin");
+        this.setSciezkaWyniku("wynik.bin");
     }
 
     public Double getCzestProbkCiaglego() {
@@ -281,6 +309,8 @@ public class Parametry implements Serializable {
     }
 
     private void asercjaPoczatkowa() throws ParametryAsercjaException {
+        if("0".equals(this.getRodzajSygnalu())) return;
+        
         if (this.getD().compareTo(0.0) < 0) {
             throw new ParametryAsercjaException("czas trwania sygnału powinien być liczbą rzeczywistą większą od 0!");
         }
@@ -302,6 +332,15 @@ public class Parametry implements Serializable {
                 (this.getP().compareTo(0.0) < 0.0 || 
                 this.getTs().compareTo(1.0 + this.getD()) > 0.0)) {
             throw new ParametryAsercjaException("Prawdopodobieństwo musi być liczbą rzeczywistą z przedziału [0 ; 1]");
+        }
+        if(!"+".equals(this.getRodzajOperacji())
+                &&!"-".equals(this.getRodzajOperacji())
+                &&!"*".equals(this.getRodzajOperacji())
+                &&!"/".equals(this.getRodzajOperacji())
+                &&!"0".equals(this.getRodzajOperacji())
+                )
+        {
+            throw  new ParametryAsercjaException("należy określić operację na sygnałach za pomocą jednego ze znaków: \"+\", \"-\", \"*\" albo \"/\".");
         }
     }
 
