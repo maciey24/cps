@@ -7,6 +7,7 @@ package com.mycompany.cps;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -62,5 +63,27 @@ public class Punkt implements Serializable {
         this.wspolrzedne.add(x);
         this.wspolrzedne.add(y);
         this.wspolrzedne.add(z);
+    }
+    public static class PunktCzasComparator implements Comparator<Punkt>
+    {
+        @Override
+        public int compare(Punkt o1, Punkt o2) {
+            return (int) (o1.getX() - o2.getX());
+        }
+    }
+    
+    public Double getX()
+    {
+        return this.getWspolrzedne().get(0);
+    }
+    
+    public Double getY()
+    {
+        return this.getWspolrzedne().get(1);
+    }
+    
+    public void setY(Double wartosc)
+    {
+        this.getWspolrzedne().set(1, wartosc);
     }
 }

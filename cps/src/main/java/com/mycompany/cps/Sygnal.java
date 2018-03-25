@@ -5,6 +5,7 @@
  */
 package com.mycompany.cps;
 
+import com.mycompany.cps.dzial.Dzialanie;
 import com.mycompany.cps.syg.SygnalGenerator;
 import com.thoughtworks.xstream.core.util.CustomObjectInputStream;
 import java.io.File;
@@ -15,6 +16,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +34,12 @@ public class Sygnal implements Serializable{
     Sygnal(SygnalGenerator generatorSygnalu, Parametry p) {
         this.setList(generatorSygnalu.sygnal(p));
         this.setNazwa(generatorSygnalu.getNazwa());
+    }
+    
+    Sygnal()
+    {
+        this.setNazwa("");
+        this.setList(new ArrayList<>());
     }
     
     public List<Punkt> getList() {
@@ -89,4 +99,36 @@ public class Sygnal implements Serializable{
         }
         return null;
     }
+    
+    static Sygnal dzialanie(Sygnal s1, Sygnal s2, Dzialanie d)
+    {
+        Sygnal res = new Sygnal();
+        res.setNazwa(s1.getNazwa() + " " +d.getNazwa()+" " + s2.getNazwa());
+
+        for(Punkt p: s1.list)
+        {
+            res.list.add(p);
+        }
+        for(Punkt p: s2.list)
+        {
+            res.list.add(p);
+        }
+        Comparator c = new Punkt.PunktCzasComparator();
+        Collections.sort(res.list, c);
+        
+        for(int i = 1 ; i<res.list.size(); i++)
+        {            
+            if(res.list.get(i).getX().equals(res.list.get(i-1).getX()))
+            {
+                try {
+                    res.list.get(i-1).setY(d.dz(res.list.get(i).getY(), res.list.get(i-1).getY()));
+                    res.list.remove(i);
+                } catch (Dzialanie.DzialanieException ex) {
+                    res.list.remove(i);
+                    res.list.remove(i-1);
+                }
+            }
+        }
+        return res;
+    }    
 }

@@ -25,7 +25,7 @@ public class SygProstokatnySymetrycznyGenerator extends SygnalGenerator{
         ArrayList<Punkt> res = new ArrayList<>();
         for(Double t = p.getT1(); t<(p.getT1()+p.getD()); t+=p.getKrokProbkowaniaCiaglego())
         {
-            if(t<(Math.floor(t/p.getT())* p.getT()+p.getKw()*p.getT())) {
+            if(t<((Math.floor((t-p.getT1())/p.getT())*p.getT()+p.getT1())+p.getKw()*(p.getT()))) {
                 res.add(new Punkt(t, p.getA()));
             }
             else {

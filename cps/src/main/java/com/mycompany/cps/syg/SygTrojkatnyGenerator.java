@@ -25,11 +25,11 @@ public class SygTrojkatnyGenerator extends SygnalGenerator{
         ArrayList<Punkt> res = new ArrayList<>();
         for(Double t = p.getT1(); t<(p.getT1()+p.getD()); t+=p.getKrokProbkowaniaCiaglego())
         {
-            if(t<(Math.floor(t/p.getT())* p.getT()+p.getKw()*p.getT())) {
-                res.add(new Punkt(t, ((p.getA())/(p.getKw()*p.getT()))*(t-Math.floor(t/p.getT())*p.getT()-p.getT1())));
+            if(t<((Math.floor((t-p.getT1())/p.getT())*p.getT()+p.getT1())+p.getKw()*(p.getT()))) {
+                res.add(new Punkt(t, ((p.getA())/(p.getKw()*p.getT()))*(t-Math.floor((t-p.getT1())/p.getT())*p.getT()-p.getT1())));
             }
             else {
-                res.add(new Punkt(t, (((-p.getA())/((1.0-p.getKw())*p.getT()))*(t-Math.floor(t/p.getT())*p.getT()-p.getT1())) + ((p.getA())/((1.0-p.getKw()))) ));
+                res.add(new Punkt(t, (((-p.getA())/((1.0-p.getKw())*p.getT()))*(t-Math.floor((t-p.getT1())/p.getT())*p.getT()-p.getT1())) + ((p.getA())/((1.0-p.getKw()))) ));
             }
         }
         return res;

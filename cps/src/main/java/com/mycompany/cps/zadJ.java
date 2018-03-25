@@ -5,6 +5,8 @@
  */
 package com.mycompany.cps;
 
+import com.mycompany.cps.dzial.Dodawanie;
+import com.mycompany.cps.dzial.Dzialanie;
 import com.mycompany.cps.syg.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,27 +22,45 @@ public class zadJ {
     static String sciezkaPliku = "parametry.config";
 
     public static void main(String[] args) {
+
+//        Sygnal s1;
+        Sygnal s2;
         Parametry p = Parametry.wczytajParametry(sciezkaPliku);
-        Sygnal s1;
-        if(p.isCzyWczytacZPliku())
-        {
-            s1 = Sygnal.wczytajZPliku(p.getSciezkaWczytywania());
-        }
-        else
-        {
-            SygnalGenerator generatorSygnalu = wybierzSygnal(p);
-            s1 = new Sygnal(generatorSygnalu, p);
-        }
-        dodajSygnal(s1);
-        if(p.isCzyZapisacDoPliku())
-        {
-            s1.zapiszDoPliku(p.getSciezkaZapisywania());
-        }
-        
+//        SygnalGenerator gssin = new SygSinusoidalnyWyprostowanyDwupolowkowoGenerator();
+//        s1 = new Sygnal(gssin, p);
+        SygnalGenerator gspr = new SygTrojkatnyGenerator();
+        s2 = new Sygnal(gspr, p);
+
+//        Dzialanie d = new Dodawanie();
+
+//        Sygnal wynik = Sygnal.dzialanie(s1, s2, d);
+        dodajSygnal(s2);
         Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 1.", "Wykres", listaSygnalow);
+
+        
+//        {
+//        Parametry p = Parametry.wczytajParametry(sciezkaPliku);
+//        Sygnal s1;
+//        if(p.isCzyWczytacZPliku())
+//        {
+//            s1 = Sygnal.wczytajZPliku(p.getSciezkaWczytywania());
+//        }
+//        else
+//        {
+//            SygnalGenerator generatorSygnalu = wybierzSygnal(p);
+//            s1 = new Sygnal(generatorSygnalu, p);
+//        }
+//        dodajSygnal(s1);
+//        if(p.isCzyZapisacDoPliku())
+//        {
+//            s1.zapiszDoPliku(p.getSciezkaZapisywania());
+//        }
+//        
+//        Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 1.", "Wykres", listaSygnalow);
+//        }
     }
-    
-    private static SygnalGenerator wybierzSygnal(Parametry p){
+
+    private static SygnalGenerator wybierzSygnal(Parametry p) {
         SygnalGenerator generatorSygnalu = null;
         switch (p.getRodzajSygnalu()) {
             case "S1":
@@ -80,7 +100,7 @@ public class zadJ {
         return generatorSygnalu;
     }
 
-    private static void dodajSygnal(Sygnal s) {        
+    private static void dodajSygnal(Sygnal s) {
         listaSygnalow.add(s);
     }
 }
