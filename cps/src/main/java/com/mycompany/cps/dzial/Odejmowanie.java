@@ -11,7 +11,7 @@ package com.mycompany.cps.dzial;
  */
 public class Odejmowanie extends Dzialanie{
 
-    public Odejmowanie(String nazwa) {
+    public Odejmowanie() {
         super("-");
     }
 

@@ -7,6 +7,7 @@ package com.mycompany.cps;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -28,6 +29,16 @@ public class Punkt implements Serializable {
     public Punkt()
     {
         this.wspolrzedne = new ArrayList<>();
+    }
+    public Punkt clone()
+    {
+        Punkt res = new Punkt();
+        res.wspolrzedne = new ArrayList<>();
+        for(Double d : wspolrzedne)
+        {
+            res.wspolrzedne.add(d);
+        }
+        return res;
     }
     
     public Punkt(List<Double> listaWspolrzednych)
@@ -68,7 +79,7 @@ public class Punkt implements Serializable {
     {
         @Override
         public int compare(Punkt o1, Punkt o2) {
-            return (int) (o1.getX() - o2.getX());
+            return Double.compare(o1.getX(), o2.getX());
         }
     }
     

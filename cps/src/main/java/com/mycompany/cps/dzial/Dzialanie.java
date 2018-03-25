@@ -9,7 +9,7 @@ package com.mycompany.cps.dzial;
  *
  * @author maciek
  */
-public class Dzialanie {
+public abstract class Dzialanie {
     String nazwa ="";
 
    public Dzialanie(String nazwa)

@@ -107,11 +107,11 @@ public class Sygnal implements Serializable{
 
         for(Punkt p: s1.list)
         {
-            res.list.add(p);
+            res.list.add(p.clone());
         }
         for(Punkt p: s2.list)
         {
-            res.list.add(p);
+            res.list.add(p.clone());
         }
         Comparator c = new Punkt.PunktCzasComparator();
         Collections.sort(res.list, c);
@@ -121,7 +121,7 @@ public class Sygnal implements Serializable{
             if(res.list.get(i).getX().equals(res.list.get(i-1).getX()))
             {
                 try {
-                    res.list.get(i-1).setY(d.dz(res.list.get(i).getY(), res.list.get(i-1).getY()));
+                    res.list.get(i-1).setY(d.dz(res.list.get(i-1).getY(), res.list.get(i).getY()));
                     res.list.remove(i);
                 } catch (Dzialanie.DzialanieException ex) {
                     res.list.remove(i);

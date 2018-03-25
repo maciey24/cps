@@ -5,8 +5,8 @@
  */
 package com.mycompany.cps;
 
-import com.mycompany.cps.dzial.Dodawanie;
-import com.mycompany.cps.dzial.Dzialanie;
+//import com.mycompany.cps.dzial.Dodawanie;
+import com.mycompany.cps.dzial.*;
 import com.mycompany.cps.syg.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,18 +23,20 @@ public class zadJ {
 
     public static void main(String[] args) {
 
-//        Sygnal s1;
+        Sygnal s1;
         Sygnal s2;
         Parametry p = Parametry.wczytajParametry(sciezkaPliku);
-//        SygnalGenerator gssin = new SygSinusoidalnyWyprostowanyDwupolowkowoGenerator();
-//        s1 = new Sygnal(gssin, p);
+        SygnalGenerator gssin = new SygSinusoidalnyWyprostowanyDwupolowkowoGenerator();
+        s1 = new Sygnal(gssin, p);
         SygnalGenerator gspr = new SygTrojkatnyGenerator();
         s2 = new Sygnal(gspr, p);
 
-//        Dzialanie d = new Dodawanie();
+        Dzialanie d = new Dodawanie();
 
-//        Sygnal wynik = Sygnal.dzialanie(s1, s2, d);
+        Sygnal wynik = Sygnal.dzialanie(s1, s2, d);
+        dodajSygnal(s1);
         dodajSygnal(s2);
+        dodajSygnal(wynik);
         Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 1.", "Wykres", listaSygnalow);
 
         

@@ -11,7 +11,7 @@ package com.mycompany.cps.dzial;
  */
 public class Dzielenie extends Dzialanie{
 
-    public Dzielenie(String nazwa) {
+    public Dzielenie() {
         super("/");
     }
 
