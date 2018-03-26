@@ -23,7 +23,7 @@ public class Histogram extends ApplicationFrame {
          chartTitle,           
          "Przedział",            
          "Liczba próbek",
-         createDataset(s.histogram(liczbaPrzedzialow)),
+         createDataset(s.histogram(liczbaPrzedzialow), s.getNazwa()),
          PlotOrientation.VERTICAL,
          true, true, false);
          
@@ -32,8 +32,8 @@ public class Histogram extends ApplicationFrame {
       setContentPane( chartPanel ); 
    }
    
-   private CategoryDataset createDataset( HashMap<Double, Integer> histogram) {
-      final String liczbaProbek = "liczba próbek";   
+   private CategoryDataset createDataset( HashMap<Double, Integer> histogram, String nazwa) {
+      final String podpisSerii = "Histogram amplitudy próbek dla sygnału: " + nazwa;   
       final DefaultCategoryDataset dataset = new DefaultCategoryDataset( );  
       
       ArrayList<Double> listaOpisow = new ArrayList<>();
@@ -45,14 +45,16 @@ public class Histogram extends ApplicationFrame {
       
       for(Double d : listaOpisow)
       {
-          dataset.addValue(histogram.get(d), liczbaProbek, d);
+          dataset.addValue(histogram.get(d), podpisSerii, d);
       }
       
       return dataset; 
    }
    
    public static void rysuj(Sygnal s, String tytulOkna, String tytul, int liczbaPrzedzialow) {
-      Histogram chart = new Histogram(s, tytulOkna, tytul, liczbaPrzedzialow);
+       if(s == null) return;
+       if(liczbaPrzedzialow==0) return;
+      Histogram chart = new Histogram(s, tytulOkna, tytul + " dla " + liczbaPrzedzialow + " przedziałów. ", liczbaPrzedzialow);
       chart.pack();
       RefineryUtilities.centerFrameOnScreen( chart );        
       chart.setVisible( true ); 

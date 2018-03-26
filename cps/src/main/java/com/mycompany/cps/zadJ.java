@@ -43,7 +43,10 @@ public class zadJ {
         dodajSygnal(s2);
         dodajSygnal(wynik);
         Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 1.", "Wykres", listaSygnalow);
-        Histogram.rysuj(s1, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału (" + s1.getNazwa() + ") dla " + p1.getLiczbaPrzedzialowHistogramu() +" przedziałów. ", p1.getLiczbaPrzedzialowHistogramu());
+        
+        Histogram.rysuj(s1, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału", p1.getLiczbaPrzedzialowHistogramu());
+        Histogram.rysuj(s2, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału", p2.getLiczbaPrzedzialowHistogramu());
+        Histogram.rysuj(wynik, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału", p2.getLiczbaPrzedzialowHistogramu());
         
         if(p1.isCzyZapisacDoPliku())
         {
