@@ -33,6 +33,47 @@ import java.util.logging.Logger;
 public class Sygnal implements Serializable{
     private List<Punkt> list;
     private String nazwa;
+    private Double wartoscSrednia, wartoscSredniaBezwzgledna, mocSrednia, wariancja, wartoscSkuteczna;
+
+    public Double getWartoscSrednia() {
+        return wartoscSrednia;
+    }
+
+    public void setWartoscSrednia(Double wartoscSrednia) {
+        this.wartoscSrednia = wartoscSrednia;
+    }
+
+    public Double getWartoscSredniaBezwzgledna() {
+        return wartoscSredniaBezwzgledna;
+    }
+
+    public void setWartoscSredniaBezwzgledna(Double wartoscSredniaBezwzgledna) {
+        this.wartoscSredniaBezwzgledna = wartoscSredniaBezwzgledna;
+    }
+
+    public Double getMocSrednia() {
+        return mocSrednia;
+    }
+
+    public void setMocSrednia(Double mocSrednia) {
+        this.mocSrednia = mocSrednia;
+    }
+
+    public Double getWariancja() {
+        return wariancja;
+    }
+
+    public void setWariancja(Double wariancja) {
+        this.wariancja = wariancja;
+    }
+
+    public Double getWartoscSkuteczna() {
+        return wartoscSkuteczna;
+    }
+
+    public void setWartoscSkuteczna(Double wartoscSkuteczna) {
+        this.wartoscSkuteczna = wartoscSkuteczna;
+    }
 
     Sygnal(SygnalGenerator generatorSygnalu, Parametry p) {
         this.setList(generatorSygnalu.sygnal(p));
@@ -185,5 +226,69 @@ public class Sygnal implements Serializable{
         BigDecimal bd = new BigDecimal(Double.toString(value));
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+    //wartoscSrednia, wartoscSredniaBezwzgledna, mocSrednia, wariancja, wartoscSkuteczna;
+    public void obliczWszystkieParametry()
+    {
+        this.obliczWartoscSrednia();
+        this.obliczWartoscSredniaBezwzgledna();
+        this.obliczMocSrednia();
+        this.obliczWariancje();
+        this.obliczWartoscSkuteczna();
+    }
+
+    private void obliczWartoscSrednia() {
+        Double suma = 0.0;
+        for(Punkt p:this.getList())
+        {
+            suma+=p.getY();
+        }
+        this.setWartoscSrednia(suma/this.getList().size());
+    }
+
+    private void obliczWartoscSredniaBezwzgledna() {
+        Double suma = 0.0;
+        for(Punkt p:this.getList())
+        {
+            suma+=Math.abs(p.getY());
+        }
+        this.setWartoscSredniaBezwzgledna(suma/this.getList().size());
+    }
+
+    private void obliczMocSrednia() {
+        Double sumaKwadratow = 0.0;
+        for(Punkt p:this.getList())
+        {
+            sumaKwadratow+= Math.pow(p.getY(), 2.0);
+        }
+        this.setMocSrednia(sumaKwadratow/this.getList().size());
+    }
+
+    private void obliczWariancje() {
+        this.obliczWartoscSrednia();
+        Double sumaKwadratowOdchylen = 0.0;
+        for(Punkt p:this.getList())
+        {
+            sumaKwadratowOdchylen+= Math.pow(p.getY()-this.getWartoscSrednia(), 2.0);
+        }
+        this.setWariancja(sumaKwadratowOdchylen/this.getList().size());
+    }
+
+    private void obliczWartoscSkuteczna() {
+        this.obliczMocSrednia();
+        this.setWartoscSkuteczna(Math.sqrt(this.getMocSrednia()));
+    }
+    
+    public String parametryToString()
+    {
+        String parametry = "";
+        parametry += "Sygnał: " + this.getNazwa() + 
+                "\nwartość średnia: " + this.getWartoscSrednia() + 
+                "\nwartość średnia bezwzględna: " + this.getWartoscSredniaBezwzgledna()+ 
+                "\nwartość skuteczna: " + this.getWartoscSkuteczna()+ 
+                "\nwariancja: " + this.getWariancja()+ 
+                "\nmoc średnia: " + this.getMocSrednia()
+                +"\n\n";
+        return parametry;
     }
 }

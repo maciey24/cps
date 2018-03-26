@@ -48,6 +48,11 @@ public class zadJ {
         Histogram.rysuj(s2, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału", p2.getLiczbaPrzedzialowHistogramu());
         Histogram.rysuj(wynik, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału", p2.getLiczbaPrzedzialowHistogramu());
         
+        for(Sygnal s: listaSygnalow)
+        {
+            wypiszParametry(s);
+        }
+        
         if(p1.isCzyZapisacDoPliku())
         {
             if(s1!=null) 
@@ -157,4 +162,11 @@ public class zadJ {
         }
         return s;
     }
+    
+    private static void wypiszParametry(Sygnal s) {
+        if (s==null) return;
+        s.obliczWszystkieParametry();
+        System.out.println(s.parametryToString());
+    }
+    
 }
