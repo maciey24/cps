@@ -30,9 +30,25 @@ public class Parametry implements Serializable {
     public void setKrokProbkowaniaDyskretnego(Double krokProbkowaniaDyskretnego) {
         this.krokProbkowaniaDyskretnego = krokProbkowaniaDyskretnego;
     }
-    private Integer liczbaPrzedzialowHistogramu;
+    private Integer liczbaPrzedzialowHistogramu, liczbaPoziomowKwantyzacji;
+
+    public Integer getLiczbaPoziomowKwantyzacji() {
+        return liczbaPoziomowKwantyzacji;
+    }
+
+    public void setLiczbaPoziomowKwantyzacji(Integer liczbaPoziomowKwantyzacji) {
+        this.liczbaPoziomowKwantyzacji = liczbaPoziomowKwantyzacji;
+    }
     private Double wartoscSrednia, wartoscSredniaBezwzgledna, wartoscSkuteczna, wariancja, mocSrednia;
-    private String rodzajSygnalu, rodzajOperacji;
+    private String rodzajSygnalu, rodzajOperacji, rodzajKwantyzacji;
+
+    public String getRodzajKwantyzacji() {
+        return rodzajKwantyzacji;
+    }
+
+    public void setRodzajKwantyzacji(String rodzajKwantyzacji) {
+        this.rodzajKwantyzacji = rodzajKwantyzacji;
+    }
 
     public String getRodzajOperacji() {
         return rodzajOperacji;

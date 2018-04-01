@@ -80,7 +80,7 @@ public class Sygnal implements Serializable{
         this.setNazwa(generatorSygnalu.getNazwa());
     }
     
-    Sygnal()
+    public Sygnal()
     {
         this.setNazwa("");
         this.setList(new ArrayList<>());
@@ -184,19 +184,7 @@ public class Sygnal implements Serializable{
     {
         HashMap<Double, Integer> h = new HashMap<>();
         ArrayList<Double> krancePrzedzialow = new ArrayList<>();
-        Double min = Double.POSITIVE_INFINITY;
-        Double max = Double.NEGATIVE_INFINITY;
-        for(Punkt p : this.getList())
-        {
-            if(p.getY()<min)
-            {
-                min = p.getY();
-            }
-            if(p.getY()>max)
-            {
-                max = p.getY();
-            }
-        }
+        Double min = this.obliczMin(), max = this.obliczMax();
         Double A = max - min;
         Double krok = A/liczbaPrzedzialow;
         for(int i = 0; i<liczbaPrzedzialow; i++)
@@ -290,5 +278,49 @@ public class Sygnal implements Serializable{
                 "\nmoc średnia: " + this.getMocSrednia()
                 +"\n\n";
         return parametry;
+    }
+
+    public Double getWartosc(Double t) {
+        Double krok = this.getList().get(1).getX() - this.getList().get(0).getX();
+        Double t1 = this.getList().get(0).getX();
+        Double tz = this.getList().get(this.getList().size()-1).getX();
+        if(t<t1 || t>tz)
+        {
+            throw new IndexOutOfBoundsException("sygnał nie miał żadnej wartości w podanym czasie");
+        }
+        Double ind = Math.floor((t-t1)/krok);
+        int i = ind.intValue();
+        if(this.getList().get(i).getX().equals(t))
+        {
+            return this.getList().get(i).getY();
+        }
+        else
+        {
+            return (this.getList().get(i).getY()+this.getList().get(i+1).getY())/2.0;
+        }
+    }
+
+    public Double obliczMin() {
+        Double min = Double.POSITIVE_INFINITY;
+        for(Punkt p : this.getList())
+        {
+            if(p.getY()<min)
+            {
+                min = p.getY();
+            }
+        }
+        return min;
+    }
+
+    public Double obliczMax() {
+        Double max = Double.NEGATIVE_INFINITY;
+        for(Punkt p : this.getList())
+        {
+            if(p.getY()>max)
+            {
+                max = p.getY();
+            }
+        }
+        return max;
     }
 }
