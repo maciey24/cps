@@ -33,6 +33,10 @@ public class zadD {
         Kwantyzacja kw = new Kwantyzacja();
         Sygnal s3 = kw.kwantyzuj(s2, p1);
         
+        Ekstrapolacja0 e = new Ekstrapolacja0();
+        Sygnal odtw = e.odtworz(s3, p1);
+        
+        dodajSygnal(odtw);
         dodajSygnal(s3);
         dodajSygnal(s2);
         dodajSygnal(s1);

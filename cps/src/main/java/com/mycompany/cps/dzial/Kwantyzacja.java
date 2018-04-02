@@ -18,7 +18,7 @@ import java.util.Collections;
  */
 public class Kwantyzacja {
     private Double krok;
-        ArrayList<Double> poziomy;
+        private ArrayList<Double> poziomy;
 
     public Sygnal kwantyzuj(Sygnal s, Parametry p)
     {
