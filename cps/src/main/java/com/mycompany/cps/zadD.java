@@ -28,17 +28,17 @@ public class zadD {
         Sygnal s1 = stworzSygnal(p1, sg1);
         
         Probkowanie pr = new Probkowanie();
-        Sygnal s2 = pr.probkuj(s1, p1);
+        Sygnal sprobkowany = pr.probkuj(s1, p1);
         
         Kwantyzacja kw = new Kwantyzacja();
-        Sygnal s3 = kw.kwantyzuj(s2, p1);
+        Sygnal skwantyzowany = kw.kwantyzuj(sprobkowany, p1);
         
-        Ekstrapolacja0 e = new Ekstrapolacja0();
-        Sygnal odtw = e.odtworz(s3, p1);
+        Rekonstrukcja rek = wybierzRodzajRekonstrukcji(p1);
+        Sygnal odtworzony = rek.odtworz(skwantyzowany, p1);
         
-        dodajSygnal(odtw);
-        dodajSygnal(s3);
-        dodajSygnal(s2);
+        dodajSygnal(skwantyzowany);
+        dodajSygnal(odtworzony);
+        dodajSygnal(sprobkowany);
         dodajSygnal(s1);
         Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 1.", "Wykres", listaSygnalow);
 //        Histogram.rysuj(s1, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału", p1.getLiczbaPrzedzialowHistogramu());
@@ -133,6 +133,27 @@ public class zadD {
         if (s==null) return;
         s.obliczWszystkieParametry();
         System.out.println(s.parametryToString());
+    }
+
+    private static Rekonstrukcja wybierzRodzajRekonstrukcji(Parametry p) {
+        if(p == null) return null;
+        
+        Rekonstrukcja r = null;
+        
+        switch (p.getRodzajRekonstrukcji()) {
+            case "R1":
+                r = new Ekstrapolacja0();
+                break;
+            case "R2":
+                r = new Ekstrapolacja1();
+                break;
+            case "R3":
+                throw new UnsupportedOperationException("nie obslugiwane");
+//                r = new EkstrapolacjaSinC();
+//                break;
+        
+        }
+        return r;
     }
     
 }

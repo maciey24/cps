@@ -16,7 +16,7 @@ import java.util.Collections;
  *
  * @author maciek
  */
-public class Ekstrapolacja0 implements Rekonstrukcja{
+public class Ekstrapolacja1 implements Rekonstrukcja{
     private Double krok;
 
     @Override
@@ -29,9 +29,14 @@ public class Ekstrapolacja0 implements Rekonstrukcja{
         for(int i = 0; i<s.getList().size(); i++)
         {
             o.getList().add(new Punkt(s.getList().get(i).getWspolrzedne()));
-            for(int j=1; j<liczbaProbekWCzasieProbkowania; j++)
+            
+            if(i<s.getList().size()-1)
             {
-                o.getList().add(new Punkt(s.getList().get(i).getX()+(j*krok), s.getList().get(i).getY()));
+                Double dY = (s.getList().get(i+1).getY()-s.getList().get(i).getY())/liczbaProbekWCzasieProbkowania;
+                for(int j=1; j<liczbaProbekWCzasieProbkowania; j++)
+                {
+                    o.getList().add(new Punkt(s.getList().get(i).getX()+(j*krok), s.getList().get(i).getY()+(j*dY)));
+                }
             }
         }
 

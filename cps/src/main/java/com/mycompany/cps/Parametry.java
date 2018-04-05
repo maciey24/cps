@@ -40,7 +40,15 @@ public class Parametry implements Serializable {
         this.liczbaPoziomowKwantyzacji = liczbaPoziomowKwantyzacji;
     }
     private Double wartoscSrednia, wartoscSredniaBezwzgledna, wartoscSkuteczna, wariancja, mocSrednia;
-    private String rodzajSygnalu, rodzajOperacji, rodzajKwantyzacji;
+    private String rodzajSygnalu, rodzajOperacji, rodzajKwantyzacji, rodzajRekonstrukcji;
+
+    public String getRodzajRekonstrukcji() {
+        return rodzajRekonstrukcji;
+    }
+
+    public void setRodzajRekonstrukcji(String rodzajRekonstrukcji) {
+        this.rodzajRekonstrukcji = rodzajRekonstrukcji;
+    }
 
     public String getRodzajKwantyzacji() {
         return rodzajKwantyzacji;
@@ -143,7 +151,9 @@ public class Parametry implements Serializable {
         }
         Parametry p = (Parametry) xStream.fromXML(zawartoscPliku);
         p.ustawKrokProbkowania();
+        p.setRodzajKwantyzacji(p.getRodzajKwantyzacji().toUpperCase());
         p.setRodzajSygnalu(p.getRodzajSygnalu().toUpperCase());
+        p.setRodzajRekonstrukcji(p.getRodzajRekonstrukcji().toUpperCase());
         try {
             p.asercjaPoczatkowa();
         } catch (ParametryAsercjaException ex) {
