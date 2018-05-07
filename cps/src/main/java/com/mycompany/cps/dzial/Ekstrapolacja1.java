@@ -20,10 +20,10 @@ public class Ekstrapolacja1 implements Rekonstrukcja{
     private Double krok;
 
     @Override
-    public Sygnal odtworz(Sygnal s, Parametry p)
+    public Sygnal odtworz(Sygnal s, Double krok)
     {
         Sygnal o = new Sygnal();
-        krok = p.getKrokProbkowaniaCiaglego();
+        this.krok = krok;
         Double liczbaProbekWCzasieProbkowania = (s.getList().get(1).getX() - s.getList().get(0).getX())/krok;
         
         for(int i = 0; i<s.getList().size(); i++)

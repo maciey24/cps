@@ -75,7 +75,7 @@ public class Sygnal implements Serializable{
         this.wartoscSkuteczna = wartoscSkuteczna;
     }
 
-    Sygnal(SygnalGenerator generatorSygnalu, Parametry p) {
+    public Sygnal(SygnalGenerator generatorSygnalu, Parametry p) {
         this.setList(generatorSygnalu.sygnal(p));
         this.setNazwa(generatorSygnalu.getNazwa());
     }
@@ -286,7 +286,7 @@ public class Sygnal implements Serializable{
         Double tz = this.getList().get(this.getList().size()-1).getX();
         if(t<t1 || t>tz)
         {
-            throw new IndexOutOfBoundsException("sygnał nie miał żadnej wartości w podanym czasie");
+            return 0.0;
         }
         Double ind = Math.floor((t-t1)/krok);
         int i = ind.intValue();
@@ -322,5 +322,13 @@ public class Sygnal implements Serializable{
             }
         }
         return max;
+    }
+    
+    public Double obliczKrokProbkowania()
+    {
+        if(this.getList().size()>=2)
+            return this.getList().get(1).getX() - this.getList().get(0).getX();
+        else 
+            throw new IndexOutOfBoundsException();
     }
 }

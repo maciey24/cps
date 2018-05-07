@@ -21,7 +21,25 @@ import java.util.logging.Logger;
  */
 public class Parametry implements Serializable {
 
+    public Parametry(Double czestProbkCiaglego, 
+            Double krokProbkowaniaCiaglego, 
+            Double krokProbkowaniaDyskr, Double A, Double T, Double t1, 
+            Double d, Double t2) {
+        this.czestProbkCiaglego = czestProbkCiaglego;
+        this.krokProbkowaniaCiaglego = krokProbkowaniaCiaglego;
+        this.krokProbkowaniaDyskretnego = krokProbkowaniaDyskr;
+        this.A = A;
+        this.T = T;
+        this.t1 = t1;
+        this.d = d;
+        this.t2 = t2;
+    }
+
     private Double czestProbkCiaglego, krokProbkowaniaCiaglego, krokProbkowaniaDyskretnego;
+
+    private Parametry() {
+        
+    }
 
     public Double getKrokProbkowaniaDyskretnego() {
         return krokProbkowaniaDyskretnego;
@@ -90,7 +108,8 @@ public class Parametry implements Serializable {
     public void setSciezkaWczytywania(String sciezkaWczytywania) {
         this.sciezkaWczytywania = sciezkaWczytywania;
     }
-    //Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy;
+    //Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy, probka koncowa, czas skoku,
+    //czestotliwosc, prawdopodobienstwo
     private Double A, T, t1, d, kw, t2, n2, ts, f, p;
     private boolean czyWczytacZPliku, czyZapisacDoPliku, czyWynikDoPliku;
 

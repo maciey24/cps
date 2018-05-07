@@ -8,6 +8,7 @@ package com.mycompany.cps.dzial;
 import com.mycompany.cps.Parametry;
 import com.mycompany.cps.Punkt;
 import com.mycompany.cps.Sygnal;
+import com.mycompany.cps.syg.SygSincGenerator;
 import com.mycompany.cps.syg.SygnalGenerator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,25 +17,28 @@ import java.util.Collections;
  *
  * @author maciek
  */
-public class Ekstrapolacja0 implements Rekonstrukcja{
+public class InterpolacjaSinc implements Rekonstrukcja{
     private Double krok;
 
     @Override
     public Sygnal odtworz(Sygnal s, Double krok)
     {
         Sygnal o = new Sygnal();
+        SygSincGenerator sygSincGen = new SygSincGenerator();
+        Parametry pSinc = new Parametry(1000.0, 0.001, 1.0, 1.0, Math.PI, -10.0, 20.0, 10.0);
+        Double ts = s.obliczKrokProbkowania();
         this.krok = krok;
-        Double liczbaProbekWCzasieProbkowania = (s.getList().get(1).getX() - s.getList().get(0).getX())/krok;
-        
-        for(int i = 0; i<s.getList().size(); i++)
+  
+        for(Double t = s.getList().get(0).getX(); t<s.getList().get(s.getList().size()-1).getX(); t+=krok)
         {
-            o.getList().add(new Punkt(s.getList().get(i).getWspolrzedne()));
-            for(int j=1; j<liczbaProbekWCzasieProbkowania; j++)
+            Punkt p = new Punkt(t, 0.0);
+            for(int n=0; n<s.getList().size(); n++)
             {
-                o.getList().add(new Punkt(s.getList().get(i).getX()+(j*krok), s.getList().get(i).getY()));
+                p.setY(p.getY()+s.getList().get(n).getY()*sygSincGen.getWartosc((t/ts-n)-(1.0/ts)*s.getList().get(0).getX()));
             }
+            o.getList().add(p);
         }
-
+        
         o.setNazwa("Odtworzony z "+s.getNazwa().toLowerCase());
         return o;
     }

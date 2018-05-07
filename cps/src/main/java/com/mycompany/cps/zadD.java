@@ -33,14 +33,23 @@ public class zadD {
         Kwantyzacja kw = new Kwantyzacja();
         Sygnal skwantyzowany = kw.kwantyzuj(sprobkowany, p1);
         
-        Rekonstrukcja rek = wybierzRodzajRekonstrukcji(p1);
-        Sygnal odtworzony = rek.odtworz(skwantyzowany, p1);
+        Rekonstrukcja rek = wybierzRodzajRekonstrukcji(p1.getRodzajRekonstrukcji());
+        Sygnal odtworzony = rek.odtworz(skwantyzowany, p1.getKrokProbkowaniaCiaglego());
         
+//        Parametry psinc = Parametry.wczytajParametry(sciezkaParametrow1);
+//        psinc.setA(1.0);
+//        psinc.setCzyWczytacZPliku(false);
+//        psinc.setD(50.0);
+//        psinc.setT1(-25.0);
+//        SygnalGenerator sincGen = new SygSincGenerator();
+//        Sygnal sinc = stworzSygnal(psinc, sincGen);
+//        dodajSygnal(sinc);
+//
         dodajSygnal(skwantyzowany);
         dodajSygnal(odtworzony);
         dodajSygnal(sprobkowany);
         dodajSygnal(s1);
-        Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 1.", "Wykres", listaSygnalow);
+        Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 2.", "Wykres", listaSygnalow);
 //        Histogram.rysuj(s1, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału", p1.getLiczbaPrzedzialowHistogramu());
     }
 
@@ -135,12 +144,12 @@ public class zadD {
         System.out.println(s.parametryToString());
     }
 
-    private static Rekonstrukcja wybierzRodzajRekonstrukcji(Parametry p) {
+    private static Rekonstrukcja wybierzRodzajRekonstrukcji(String p) {
         if(p == null) return null;
         
         Rekonstrukcja r = null;
         
-        switch (p.getRodzajRekonstrukcji()) {
+        switch (p) {
             case "R1":
                 r = new Ekstrapolacja0();
                 break;
@@ -148,10 +157,8 @@ public class zadD {
                 r = new Ekstrapolacja1();
                 break;
             case "R3":
-                throw new UnsupportedOperationException("nie obslugiwane");
-//                r = new EkstrapolacjaSinC();
-//                break;
-        
+                r = new InterpolacjaSinc();
+                break;
         }
         return r;
     }

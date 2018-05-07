@@ -13,5 +13,5 @@ import com.mycompany.cps.Sygnal;
  * @author maciek
  */
 public interface Rekonstrukcja {
-    public abstract Sygnal odtworz(Sygnal s, Parametry p);
+    public abstract Sygnal odtworz(Sygnal s, Double krok);
 }
