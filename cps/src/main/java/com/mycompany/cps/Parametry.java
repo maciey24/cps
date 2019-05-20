@@ -112,8 +112,8 @@ public class Parametry implements Serializable {
         this.sciezkaWczytywania = sciezkaWczytywania;
     }
 
-    //             Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy, probka koncowa, czas skoku,    //czestotliwosc, prawdopodobienstwo
-    private Double A,         T,                t1,              d,                    kw,                       t2,           n2,             ts,              f,             p;
+    //             Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy, probka koncowa, czas skoku,    //czestotliwosc (probkowania), prawdopodobienstwo
+    private Double A,         T,                t1,              d,                    kw,                       t2,           n2,             ts,              f,                            p;
     private boolean czyWczytacZPliku, czyZapisacDoPliku, czyWynikDoPliku;
 
     public boolean isCzyWynikDoPliku() {

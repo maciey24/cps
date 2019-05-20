@@ -142,21 +142,24 @@ public class zadD {
 
     private static Rekonstrukcja wybierzRodzajRekonstrukcji(String p) {
         if (p == null) return null;
+        p = p.toLowerCase();
 
         Rekonstrukcja r = null;
 
         switch (p) {
-            case "R1":
+            case "r1":
                 r = new Ekstrapolacja0();
                 break;
-            case "R2":
+            case "r2":
                 r = new Ekstrapolacja1();
                 break;
-            case "R3":
+            case "r3":
                 r = new InterpolacjaSinc();
                 break;
         }
-        throw new UnsupportedOperationException("nie określono rodzaju rekonstrukcji");
+        if (r != null) return r;
+        else
+            throw new UnsupportedOperationException("nie określono rodzaju rekonstrukcji");
     }
 
     private static void miaryPodobienstwa(Sygnal s, Sygnal o) {
