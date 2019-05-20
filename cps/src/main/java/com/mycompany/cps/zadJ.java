@@ -6,13 +6,14 @@
 package com.mycompany.cps;
 
 //import com.mycompany.cps.dzial.Dodawanie;
+
 import com.mycompany.cps.dzial.*;
 import com.mycompany.cps.syg.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author maciek
  */
 public class zadJ {
@@ -25,64 +26,56 @@ public class zadJ {
     public static void main(String[] args) {
         Parametry p1 = Parametry.wczytajParametry(sciezkaParametrow1);
         Parametry p2 = Parametry.wczytajParametry(sciezkaParametrow2);
-        
+
         Sygnal wynik = null;
         SygnalGenerator sg1 = wybierzSygnal(p1);
         SygnalGenerator sg2 = wybierzSygnal(p2);
         Sygnal s1 = stworzSygnal(p1, sg1);
         Sygnal s2 = stworzSygnal(p2, sg2);
-         
+
         Dzialanie d = wybierzDzialanie(p2);
-        
-        if(d!=null) 
-        {
+
+        if (d != null) {
             wynik = Sygnal.dzialanie(s1, s2, d);
         }
-        
+
         dodajSygnal(s1);
         dodajSygnal(s2);
         dodajSygnal(wynik);
         Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 1.", "Wykres", listaSygnalow);
-        
+
         Histogram.rysuj(s1, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału", p1.getLiczbaPrzedzialowHistogramu());
         Histogram.rysuj(s2, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału", p2.getLiczbaPrzedzialowHistogramu());
         Histogram.rysuj(wynik, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału", p2.getLiczbaPrzedzialowHistogramu());
-        
-        for(Sygnal s: listaSygnalow)
-        {
+
+        for (Sygnal s : listaSygnalow) {
             wypiszParametry(s);
         }
-        
-        if(p1.isCzyZapisacDoPliku())
-        {
-            if(s1!=null) 
-            {
+
+        if (p1.isCzyZapisacDoPliku()) {
+            if (s1 != null) {
                 s1.zapiszDoPliku(p1.getSciezkaZapisywania());
             }
         }
-        if(p2.isCzyZapisacDoPliku())
-        {
-            if(s2!=null) 
-            {
+        if (p2.isCzyZapisacDoPliku()) {
+            if (s2 != null) {
                 s2.zapiszDoPliku(p2.getSciezkaZapisywania());
             }
         }
-        if(p2.isCzyWynikDoPliku())
-        {
-            if(wynik!=null) 
-            {
+        if (p2.isCzyWynikDoPliku()) {
+            if (wynik != null) {
                 wynik.zapiszDoPliku(p2.getSciezkaWyniku());
             }
         }
-        
-        
+
+
     }
 
     private static SygnalGenerator wybierzSygnal(Parametry p) {
-        if(p == null) return null;
-        if(p.isCzyWczytacZPliku()) return null;
-        if("0".equals(p.getRodzajSygnalu())) return null;
-        
+        if (p == null) return null;
+        if (p.isCzyWczytacZPliku()) return null;
+        if ("0".equals(p.getRodzajSygnalu())) return null;
+
         SygnalGenerator generatorSygnalu = null;
         switch (p.getRodzajSygnalu()) {
             case "S1":
@@ -123,15 +116,15 @@ public class zadJ {
     }
 
     private static void dodajSygnal(Sygnal s) {
-        if (s==null) return;
+        if (s == null) return;
         listaSygnalow.add(s);
     }
 
     private static Dzialanie wybierzDzialanie(Parametry p) {
-        if(p == null) return null;
-        if("0".equals(p.getRodzajSygnalu())) return null;
-        if("0".equals(p.getRodzajOperacji())) return null;
-                
+        if (p == null) return null;
+        if ("0".equals(p.getRodzajSygnalu())) return null;
+        if ("0".equals(p.getRodzajOperacji())) return null;
+
         Dzialanie dz = null;
         switch (p.getRodzajOperacji()) {
             case "+":
@@ -152,21 +145,18 @@ public class zadJ {
 
     private static Sygnal stworzSygnal(Parametry p, SygnalGenerator sg) {
         Sygnal s = null;
-        if(p.isCzyWczytacZPliku())
-        {
+        if (p.isCzyWczytacZPliku()) {
             s = Sygnal.wczytajZPliku(p.getSciezkaWczytywania());
-        }
-        else if(!"0".equals(p.getRodzajSygnalu()))
-        {
+        } else if (!"0".equals(p.getRodzajSygnalu())) {
             s = new Sygnal(sg, p);
         }
         return s;
     }
-    
+
     private static void wypiszParametry(Sygnal s) {
-        if (s==null) return;
+        if (s == null) return;
         s.obliczWszystkieParametry();
         System.out.println(s.parametryToString());
     }
-    
+
 }

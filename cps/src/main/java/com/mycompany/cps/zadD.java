@@ -6,13 +6,14 @@
 package com.mycompany.cps;
 
 //import com.mycompany.cps.dzial.Dodawanie;
+
 import com.mycompany.cps.dzial.*;
 import com.mycompany.cps.syg.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author maciek
  */
 public class zadD {
@@ -22,42 +23,40 @@ public class zadD {
     static String sciezkaParametrow1 = "syg1.config";
 
     public static void main(String[] args) {
+        Sygnal s1, sprobkowany, skwantyzowany, odtworzony = null;
         Parametry p1 = Parametry.wczytajParametry(sciezkaParametrow1);
-        
+
         SygnalGenerator sg1 = wybierzSygnal(p1);
-        Sygnal s1 = stworzSygnal(p1, sg1);
-        
+        s1 = stworzSygnal(p1, sg1);
+
         Probkowanie pr = new Probkowanie();
-        Sygnal sprobkowany = pr.probkuj(s1, p1);
-        
+        sprobkowany = pr.probkuj(s1, p1);
+
         Kwantyzacja kw = new Kwantyzacja();
-        Sygnal skwantyzowany = kw.kwantyzuj(sprobkowany, p1);
-        
-        Rekonstrukcja rek = wybierzRodzajRekonstrukcji(p1.getRodzajRekonstrukcji());
-        Sygnal odtworzony = rek.odtworz(skwantyzowany, p1.getKrokProbkowaniaCiaglego());
-        
-//        Parametry psinc = Parametry.wczytajParametry(sciezkaParametrow1);
-//        psinc.setA(1.0);
-//        psinc.setCzyWczytacZPliku(false);
-//        psinc.setD(50.0);
-//        psinc.setT1(-25.0);
-//        SygnalGenerator sincGen = new SygSincGenerator();
-//        Sygnal sinc = stworzSygnal(psinc, sincGen);
-//        dodajSygnal(sinc);
-//
+        skwantyzowany = kw.kwantyzuj(sprobkowany, p1);
+
+        try {
+            Rekonstrukcja rek = wybierzRodzajRekonstrukcji(p1.getRodzajRekonstrukcji());
+            odtworzony = rek.odtworz(skwantyzowany, p1.getKrokProbkowaniaCiaglego());
+        } catch (UnsupportedOperationException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+
         dodajSygnal(skwantyzowany);
         dodajSygnal(odtworzony);
         dodajSygnal(sprobkowany);
         dodajSygnal(s1);
         Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 2.", "Wykres", listaSygnalow);
+        miaryPodobienstwa(s1, odtworzony);
 //        Histogram.rysuj(s1, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału", p1.getLiczbaPrzedzialowHistogramu());
     }
 
     private static SygnalGenerator wybierzSygnal(Parametry p) {
-        if(p == null) return null;
-        if(p.isCzyWczytacZPliku()) return null;
-        if("0".equals(p.getRodzajSygnalu())) return null;
-        
+        if (p == null) return null;
+        if (p.isCzyWczytacZPliku()) return null;
+        if ("0".equals(p.getRodzajSygnalu())) return null;
+
         SygnalGenerator generatorSygnalu = null;
         switch (p.getRodzajSygnalu()) {
             case "S1":
@@ -98,15 +97,15 @@ public class zadD {
     }
 
     private static void dodajSygnal(Sygnal s) {
-        if (s==null) return;
+        if (s == null) return;
         listaSygnalow.add(s);
     }
 
     private static Dzialanie wybierzDzialanie(Parametry p) {
-        if(p == null) return null;
-        if("0".equals(p.getRodzajSygnalu())) return null;
-        if("0".equals(p.getRodzajOperacji())) return null;
-                
+        if (p == null) return null;
+        if ("0".equals(p.getRodzajSygnalu())) return null;
+        if ("0".equals(p.getRodzajOperacji())) return null;
+
         Dzialanie dz = null;
         switch (p.getRodzajOperacji()) {
             case "+":
@@ -127,28 +126,25 @@ public class zadD {
 
     private static Sygnal stworzSygnal(Parametry p, SygnalGenerator sg) {
         Sygnal s = null;
-        if(p.isCzyWczytacZPliku())
-        {
+        if (p.isCzyWczytacZPliku()) {
             s = Sygnal.wczytajZPliku(p.getSciezkaWczytywania());
-        }
-        else if(!"0".equals(p.getRodzajSygnalu()))
-        {
+        } else if (!"0".equals(p.getRodzajSygnalu())) {
             s = new Sygnal(sg, p);
         }
         return s;
     }
-    
+
     private static void wypiszParametry(Sygnal s) {
-        if (s==null) return;
+        if (s == null) return;
         s.obliczWszystkieParametry();
         System.out.println(s.parametryToString());
     }
 
     private static Rekonstrukcja wybierzRodzajRekonstrukcji(String p) {
-        if(p == null) return null;
-        
+        if (p == null) return null;
+
         Rekonstrukcja r = null;
-        
+
         switch (p) {
             case "R1":
                 r = new Ekstrapolacja0();
@@ -160,7 +156,16 @@ public class zadD {
                 r = new InterpolacjaSinc();
                 break;
         }
-        return r;
+        throw new UnsupportedOperationException("nie określono rodzaju rekonstrukcji");
     }
-    
+
+    private static void miaryPodobienstwa(Sygnal s, Sygnal o) {
+        if (s == null || o == null) return;
+        System.out.println("MSE: " + Sygnal.obliczMSE(s, o));
+        System.out.println("SNR: " + Sygnal.obliczSNR(s, o));
+        System.out.println("PSNR: " + Sygnal.obliczPSNR(s, o));
+        System.out.println("MD: " + Sygnal.obliczMD(s, o));
+
+    }
+
 }

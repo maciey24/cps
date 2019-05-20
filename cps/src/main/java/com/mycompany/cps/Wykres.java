@@ -7,6 +7,7 @@ package com.mycompany.cps;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYDataset;
@@ -19,7 +20,7 @@ import org.jfree.ui.RefineryUtilities;
 
 @SuppressWarnings("serial")
 public class Wykres extends ApplicationFrame {
-    
+
     public Wykres(String tytulOkna, String tytul, List<List<Punkt>> listaSerii, List<String> etykiety) {
         super(tytulOkna);
         JFreeChart xylineChart = ChartFactory.createScatterPlot(
@@ -33,6 +34,7 @@ public class Wykres extends ApplicationFrame {
         chartPanel.setPreferredSize(new java.awt.Dimension(600, 600));
         setContentPane(chartPanel);
     }
+
     public Wykres(String tytulOkna, String tytul, List<Sygnal> listaSygnalow) {
         super(tytulOkna);
         JFreeChart xylineChart = ChartFactory.createScatterPlot(
@@ -61,7 +63,7 @@ public class Wykres extends ApplicationFrame {
 //        setContentPane(chartPanel);
 //    }
 
-     public Wykres(String applicationTitle, String chartTitle, List<Double> lst1, List<Double> lst2, String s1, String s2, String osy, String osx) {
+    public Wykres(String applicationTitle, String chartTitle, List<Double> lst1, List<Double> lst2, String s1, String s2, String osy, String osx) {
         super(applicationTitle);
         JFreeChart xylineChart = ChartFactory.createScatterPlot(
                 chartTitle,
@@ -137,41 +139,36 @@ public class Wykres extends ApplicationFrame {
         dataset.addSeries(g2);
         return dataset;
     }
-    
+
     static private XYDataset createDataset(List<Sygnal> listaSygnalow) {
-        
+
         XYSeriesCollection dataset = new XYSeriesCollection();
-        for(Sygnal syg: listaSygnalow)
-        {
+        for (Sygnal syg : listaSygnalow) {
             XYSeries s = new XYSeries(syg.getNazwa());
-            for(Punkt p : syg.getList())
-            {
+            for (Punkt p : syg.getList()) {
                 s.add(p.getWspolrzedne().get(0), p.getWspolrzedne().get(1));
             }
             dataset.addSeries(s);
         }
         return dataset;
     }
-    
-    
+
+
     static private XYDataset createDataset(List<List<Punkt>> listaSeriiPunktow, List<String> etykiety) {
-        
+
         XYSeriesCollection dataset = new XYSeriesCollection();
-        for(List<Punkt> seria : listaSeriiPunktow)
-        {
+        for (List<Punkt> seria : listaSeriiPunktow) {
             int i = listaSeriiPunktow.indexOf(seria);
             XYSeries s = new XYSeries(etykiety.get(i));
-            for(Punkt p : seria)
-            {
+            for (Punkt p : seria) {
                 s.add(p.getWspolrzedne().get(0), p.getWspolrzedne().get(1));
             }
             dataset.addSeries(s);
         }
         return dataset;
     }
-    
-    static void rysuj(String tytulOkna, String tytul, List<Sygnal> listaSygnalow)
-    {
+
+    static void rysuj(String tytulOkna, String tytul, List<Sygnal> listaSygnalow) {
         Wykres chart = new Wykres(tytulOkna, tytul, listaSygnalow);
         chart.pack();
         RefineryUtilities.centerFrameOnScreen(chart);

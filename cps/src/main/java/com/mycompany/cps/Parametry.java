@@ -6,6 +6,7 @@
 package com.mycompany.cps;
 
 import com.thoughtworks.xstream.XStream;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,15 +17,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author maciek
  */
 public class Parametry implements Serializable {
 
-    public Parametry(Double czestProbkCiaglego, 
-            Double krokProbkowaniaCiaglego, 
-            Double krokProbkowaniaDyskr, Double A, Double T, Double t1, 
-            Double d, Double t2) {
+    public Parametry(Double czestProbkCiaglego,
+                     Double krokProbkowaniaCiaglego,
+                     Double krokProbkowaniaDyskr, Double A, Double T, Double t1,
+                     Double d, Double t2) {
         this.czestProbkCiaglego = czestProbkCiaglego;
         this.krokProbkowaniaCiaglego = krokProbkowaniaCiaglego;
         this.krokProbkowaniaDyskretnego = krokProbkowaniaDyskr;
@@ -38,7 +38,7 @@ public class Parametry implements Serializable {
     private Double czestProbkCiaglego, krokProbkowaniaCiaglego, krokProbkowaniaDyskretnego;
 
     private Parametry() {
-        
+
     }
 
     public Double getKrokProbkowaniaDyskretnego() {
@@ -48,6 +48,7 @@ public class Parametry implements Serializable {
     public void setKrokProbkowaniaDyskretnego(Double krokProbkowaniaDyskretnego) {
         this.krokProbkowaniaDyskretnego = krokProbkowaniaDyskretnego;
     }
+
     private Integer liczbaPrzedzialowHistogramu, liczbaPoziomowKwantyzacji;
 
     public Integer getLiczbaPoziomowKwantyzacji() {
@@ -57,6 +58,7 @@ public class Parametry implements Serializable {
     public void setLiczbaPoziomowKwantyzacji(Integer liczbaPoziomowKwantyzacji) {
         this.liczbaPoziomowKwantyzacji = liczbaPoziomowKwantyzacji;
     }
+
     private Double wartoscSrednia, wartoscSredniaBezwzgledna, wartoscSkuteczna, wariancja, mocSrednia;
     private String rodzajSygnalu, rodzajOperacji, rodzajKwantyzacji, rodzajRekonstrukcji;
 
@@ -83,6 +85,7 @@ public class Parametry implements Serializable {
     public void setRodzajOperacji(String rodzajOperacji) {
         this.rodzajOperacji = rodzajOperacji;
     }
+
     private String sciezkaWczytywania, sciezkaZapisywania, sciezkaWyniku;
 
     public String getSciezkaWyniku() {
@@ -108,9 +111,9 @@ public class Parametry implements Serializable {
     public void setSciezkaWczytywania(String sciezkaWczytywania) {
         this.sciezkaWczytywania = sciezkaWczytywania;
     }
-    //Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy, probka koncowa, czas skoku,
-    //czestotliwosc, prawdopodobienstwo
-    private Double A, T, t1, d, kw, t2, n2, ts, f, p;
+
+    //             Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy, probka koncowa, czas skoku,    //czestotliwosc, prawdopodobienstwo
+    private Double A,         T,                t1,              d,                    kw,                       t2,           n2,             ts,              f,             p;
     private boolean czyWczytacZPliku, czyZapisacDoPliku, czyWynikDoPliku;
 
     public boolean isCzyWynikDoPliku() {
@@ -175,7 +178,7 @@ public class Parametry implements Serializable {
         p.setRodzajRekonstrukcji(p.getRodzajRekonstrukcji().toUpperCase());
         try {
             p.asercjaPoczatkowa();
-        } catch (ParametryAsercjaException ex) {
+        } catch (Exception ex) {
             System.err.println(ex.getMessage());
             return null;
         }
@@ -354,8 +357,8 @@ public class Parametry implements Serializable {
     }
 
     private void asercjaPoczatkowa() throws ParametryAsercjaException {
-        if("0".equals(this.getRodzajSygnalu())) return;
-        
+        if ("0".equals(this.getRodzajSygnalu())) return;
+
         if (this.getD().compareTo(0.0) < 0) {
             throw new ParametryAsercjaException("czas trwania sygnału powinien być liczbą rzeczywistą większą od 0!");
         }
@@ -367,25 +370,24 @@ public class Parametry implements Serializable {
         }
         if (("S9".equals(this.getRodzajSygnalu())
                 || "S10".equals(this.getRodzajSygnalu())
-                ) && 
-                (this.getTs().compareTo(this.getT1()) < 0.0 || 
-                this.getTs().compareTo(this.getT1() + this.getD()) > 0.0)) {
+        ) &&
+                (this.getTs().compareTo(this.getT1()) < 0.0 ||
+                        this.getTs().compareTo(this.getT1() + this.getD()) > 0.0)) {
             throw new ParametryAsercjaException("czas skoku musi zawierać się w przedziale od czasu początkowego do czasu końca trwania sygnału");
         }
         if (("S11".equals(this.getRodzajSygnalu()))
-                 && 
-                (this.getP().compareTo(0.0) < 0.0 || 
-                this.getTs().compareTo(1.0 + this.getD()) > 0.0)) {
+                &&
+                (this.getP().compareTo(0.0) < 0.0 ||
+                        this.getTs().compareTo(1.0 + this.getD()) > 0.0)) {
             throw new ParametryAsercjaException("Prawdopodobieństwo musi być liczbą rzeczywistą z przedziału [0 ; 1]");
         }
-        if(!"+".equals(this.getRodzajOperacji())
-                &&!"-".equals(this.getRodzajOperacji())
-                &&!"*".equals(this.getRodzajOperacji())
-                &&!"/".equals(this.getRodzajOperacji())
-                &&!"0".equals(this.getRodzajOperacji())
-                )
-        {
-            throw  new ParametryAsercjaException("należy określić operację na sygnałach za pomocą jednego ze znaków: \"+\", \"-\", \"*\" albo \"/\".");
+        if (!"+".equals(this.getRodzajOperacji())
+                && !"-".equals(this.getRodzajOperacji())
+                && !"*".equals(this.getRodzajOperacji())
+                && !"/".equals(this.getRodzajOperacji())
+                && !"0".equals(this.getRodzajOperacji())
+        ) {
+            throw new ParametryAsercjaException("należy określić operację na sygnałach za pomocą jednego ze znaków: \"+\", \"-\", \"*\" albo \"/\".");
         }
     }
 

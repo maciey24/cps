@@ -33,6 +33,7 @@ public abstract class Dzialanie {
 
         public DzialanieException() {
         }
+        
         public DzialanieException(String message) {
             super(message);
         }

@@ -12,6 +12,7 @@ import com.mycompany.cps.syg.SygSincGenerator;
 import com.mycompany.cps.syg.SygnalGenerator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
@@ -38,6 +39,8 @@ public class InterpolacjaSinc implements Rekonstrukcja{
             }
             o.getList().add(p);
         }
+        Comparator c = new Punkt.PunktCzasComparator();
+        Collections.sort(o.getList(), c);
         
         o.setNazwa("Odtworzony z "+s.getNazwa().toLowerCase());
         return o;
