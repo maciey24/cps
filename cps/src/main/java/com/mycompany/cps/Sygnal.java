@@ -33,9 +33,9 @@ import java.util.logging.Logger;
 public class Sygnal implements Serializable {
 
     static Double obliczMSE(Sygnal s, Sygnal o) {
-        Double N = Double.parseDouble(Integer.toString(o.getList().size()));
+        Double N = Double.valueOf(s.getList().size());
         Double sum = 0.0;
-        for (int i = 0; i < o.getList().size(); i++) {
+        for (int i = 0; i < s.getList().size(); i++) {
             sum += (Math.pow(Math.abs(s.getList().get(i).getY() - o.getList().get(i).getY()), 2.0));
         }
         Double res;
@@ -45,7 +45,7 @@ public class Sygnal implements Serializable {
 
     static Double obliczMD(Sygnal s, Sygnal o) {
         Double res = Double.MIN_VALUE;
-        for (int i = 0; i < o.getList().size(); i++) {
+        for (int i = 0; i < s.getList().size(); i++) {
             Double roznica = s.getList().get(i).getY() - o.getList().get(i).getY();
             roznica = Math.abs(roznica);
             if (roznica > res) {
@@ -58,12 +58,12 @@ public class Sygnal implements Serializable {
     static Double obliczSNR(Sygnal s, Sygnal o) {
         Double N = Double.parseDouble(Integer.toString(o.getList().size()));
         Double mseSum = 0.0;
-        for (int i = 0; i < o.getList().size(); i++) {
+        for (int i = 0; i < s.getList().size(); i++) {
             mseSum += (Math.pow(Math.abs(s.getList().get(i).getY() - o.getList().get(i).getY()), 2.0));
         }
 
         Double licznik = 0.0;
-        for (int i = 0; i < o.getList().size(); i++) {
+        for (int i = 0; i < s.getList().size(); i++) {
             licznik += Math.pow(s.getList().get(i).getY(), 2.0);
         }
         Double res = 10 * Math.log10(licznik / mseSum);

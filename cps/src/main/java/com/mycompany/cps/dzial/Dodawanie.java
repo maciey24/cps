@@ -6,19 +6,17 @@
 package com.mycompany.cps.dzial;
 
 /**
- *
  * @author maciek
  */
-public class Dodawanie extends Dzialanie{
+public class Dodawanie extends Dzialanie {
 
-    public Dodawanie()
-    {
+    public Dodawanie() {
         super("+");
     }
-    
+
     @Override
     public Double dz(Double d1, Double d2) {
-        return d1+d2;
+        return d1 + d2;
     }
-    
+
 }

@@ -6,16 +6,15 @@
 package com.mycompany.cps.dzial;
 
 /**
- *
  * @author maciek
  */
 public abstract class Dzialanie {
-    String nazwa ="";
+    String nazwa = "";
 
-   public Dzialanie(String nazwa)
-    {
+    public Dzialanie(String nazwa) {
         this.setNazwa(nazwa);
     }
+
     public String getNazwa() {
         return nazwa;
     }
@@ -23,9 +22,9 @@ public abstract class Dzialanie {
     public void setNazwa(String nazwa) {
         this.nazwa = nazwa;
     }
+
     //TODO: przerobic na dzialanie na punktach a nie na Double
-    public Double dz(Double d1, Double d2) throws DzialanieException
-    {
+    public Double dz(Double d1, Double d2) throws DzialanieException {
         return null;
     }
 
@@ -33,10 +32,10 @@ public abstract class Dzialanie {
 
         public DzialanieException() {
         }
-        
+
         public DzialanieException(String message) {
             super(message);
         }
     }
-    
+
 }

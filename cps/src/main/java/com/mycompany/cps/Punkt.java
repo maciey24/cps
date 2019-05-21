@@ -86,4 +86,11 @@ public class Punkt implements Serializable {
     public void setY(Double wartosc) {
         this.getWspolrzedne().set(1, wartosc);
     }
+
+    @Override
+    public String toString() {
+        return "Punkt{" +
+                "wspolrzedne=" + wspolrzedne +
+                '}';
+    }
 }
