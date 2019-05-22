@@ -38,7 +38,7 @@ public class zadD {
         try {
             Rekonstrukcja rek = wybierzRodzajRekonstrukcji(p1.getRodzajRekonstrukcji());
             odtworzony = rek.odtworz(skwantyzowany, p1.getKrokProbkowaniaCiaglego());
-        } catch (UnsupportedOperationException ex) {
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
 
