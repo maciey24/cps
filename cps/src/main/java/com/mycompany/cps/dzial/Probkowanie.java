@@ -11,24 +11,21 @@ import com.mycompany.cps.Sygnal;
 import com.mycompany.cps.syg.SygnalGenerator;
 
 /**
- *
  * @author maciek
  */
 public class Probkowanie {
     private Double krok;
 
-    public Sygnal probkuj(Sygnal s, Parametry p)
-    {
+    public Sygnal probkuj(Sygnal s, Parametry p) {
         Sygnal k = new Sygnal();
-        this.krok = 1.0/p.getF();
-        
-        for(Double t = s.getList().get(0).getX(); 
-                t<=s.getList().get(s.getList().size()-1).getX(); 
-                t+=krok)
-        {
+        this.krok = 1.0 / p.getF();
+
+        for (Double t = s.getList().get(0).getX();
+             t <= s.getList().get(s.getList().size() - 1).getX();
+             t += krok) {
             k.getList().add(new Punkt(t, s.getWartosc(t)));
         }
-        k.setNazwa("Spróbkowany "+s.getNazwa().toLowerCase());
+        k.setNazwa("Spróbkowany " + s.getNazwa().toLowerCase());
         return k;
     }
 }

@@ -6,23 +6,20 @@
 package com.mycompany.cps.dzial;
 
 /**
- *
  * @author maciek
  */
-public class Dzielenie extends Dzialanie{
+public class Dzielenie extends Dzialanie {
 
     public Dzielenie() {
         super("/");
     }
 
-    
+
     @Override
     public Double dz(Double d1, Double d2) throws DzielenieException {
-        if(!d2.equals(0.0))
-        {
-            return d1/d2;
-        }
-        else throw new DzielenieException("Dzielenie przez zero");
+        if (!d2.equals(0.0)) {
+            return d1 / d2;
+        } else throw new DzielenieException("Dzielenie przez zero");
     }
 
     private static class DzielenieException extends DzialanieException {
@@ -34,5 +31,5 @@ public class Dzielenie extends Dzialanie{
             super(message);
         }
     }
-    
+
 }

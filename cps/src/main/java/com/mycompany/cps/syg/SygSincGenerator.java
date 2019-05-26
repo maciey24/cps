@@ -7,45 +7,35 @@ package com.mycompany.cps.syg;
 
 import com.mycompany.cps.Parametry;
 import com.mycompany.cps.Punkt;
+
 import java.util.ArrayList;
 
 /**
- *
  * @author maciek
  */
-public class SygSincGenerator extends SygnalGenerator{
-    public SygSincGenerator()
-    {
+public class SygSincGenerator extends SygnalGenerator {
+    public SygSincGenerator() {
         this.nazwa = "Sygnał SinC";
     }
-    
+
     @Override
-    public ArrayList<Punkt> sygnal(Parametry p)
-    {
+    public ArrayList<Punkt> sygnal(Parametry p) {
         ArrayList<Punkt> res = new ArrayList<>();
-        for(Double t = p.getT1(); t<(p.getT1()+p.getD()); t+=p.getKrokProbkowaniaCiaglego())
-        {
-            if(t.compareTo(0.0)==0.0)
-            {
-                res.add(new Punkt(t/p.getKrokProbkowaniaDyskretnego(), 1.0));
-            }
-            else 
-            {
-                res.add(new Punkt(t/p.getKrokProbkowaniaDyskretnego(), Math.sin(t)/t));
+        for (Double t = p.getT1(); t < (p.getT1() + p.getD()); t += p.getKrokProbkowaniaCiaglego()) {
+            if (t.compareTo(0.0) == 0.0) {
+                res.add(new Punkt(t / p.getKrokProbkowaniaDyskretnego(), 1.0));
+            } else {
+                res.add(new Punkt(t / p.getKrokProbkowaniaDyskretnego(), Math.sin(t) / t));
             }
         }
         return res;
     }
-    
-    public Double getWartosc(Double x)
-    {
-        if(x.compareTo(0.0)==0.0)
-        {
+
+    public Double getWartosc(Double x) {
+        if (x.compareTo(0.0) == 0.0) {
             return 1.0;
-        }
-        else
-        {
-            return Math.sin(Math.PI*x)/(Math.PI*x);
+        } else {
+            return Math.sin(Math.PI * x) / (Math.PI * x);
         }
     }
 }

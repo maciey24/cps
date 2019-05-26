@@ -7,29 +7,27 @@ package com.mycompany.cps.syg;
 
 import com.mycompany.cps.Parametry;
 import com.mycompany.cps.Punkt;
+
 import static java.lang.Math.*;
+
 import java.util.ArrayList;
 
 /**
- *
  * @author maciek
  */
-public class SygSinusoidalnyWyprostowanyDwupolowkowoGenerator extends SygnalGenerator{
-    public SygSinusoidalnyWyprostowanyDwupolowkowoGenerator()
-    {
+public class SygSinusoidalnyWyprostowanyDwupolowkowoGenerator extends SygnalGenerator {
+    public SygSinusoidalnyWyprostowanyDwupolowkowoGenerator() {
         this.nazwa = "Sygnał sinusoidalny wyprostowany dwupołówkowo";
     }
-    
+
     @Override
-    public ArrayList<Punkt> sygnal(Parametry p)
-    {
+    public ArrayList<Punkt> sygnal(Parametry p) {
         ArrayList<Punkt> res = new ArrayList<>();
-        for(Double t = p.getT1(); t<(p.getT1()+p.getD()); t+=p.getKrokProbkowaniaCiaglego())
-        {
+        for (Double t = p.getT1(); t < (p.getT1() + p.getD()); t += p.getKrokProbkowaniaCiaglego()) {
 //            t = round(t, Double.toString(Math.floor(p.getCzestProbkCiaglego())).length(), false);
-            res.add(new Punkt(t, p.getA()*(Math.abs(sin(((2.0*Math.PI)/p.getT())*(t-p.getT1()))))));
+            res.add(new Punkt(t, p.getA() * (Math.abs(sin(((2.0 * Math.PI) / p.getT()) * (t - p.getT1()))))));
         }
         return res;
     }
-    
+
 }

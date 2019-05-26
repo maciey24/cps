@@ -9,7 +9,6 @@ import com.mycompany.cps.Parametry;
 import com.mycompany.cps.Sygnal;
 
 /**
- *
  * @author maciek
  */
 public interface Rekonstrukcja {

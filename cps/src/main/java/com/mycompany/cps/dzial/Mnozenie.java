@@ -6,10 +6,9 @@
 package com.mycompany.cps.dzial;
 
 /**
- *
  * @author maciek
  */
-public class Mnozenie extends Dzialanie{
+public class Mnozenie extends Dzialanie {
 
     public Mnozenie() {
         super("*");
@@ -17,7 +16,7 @@ public class Mnozenie extends Dzialanie{
 
     @Override
     public Double dz(Double d1, Double d2) {
-        return d1*d2;
+        return d1 * d2;
     }
-    
+
 }
