@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.Level;
@@ -21,10 +22,10 @@ import java.util.logging.Logger;
  */
 public class Parametry implements Serializable {
 
-    public Parametry(Double czestProbkCiaglego,
-                     Double krokProbkowaniaCiaglego,
-                     Double krokProbkowaniaDyskr, Double A, Double T, Double t1,
-                     Double d, Double t2) {
+    public Parametry(BigDecimal czestProbkCiaglego,
+                     BigDecimal krokProbkowaniaCiaglego,
+                     BigDecimal krokProbkowaniaDyskr, BigDecimal A, BigDecimal T, BigDecimal t1,
+                     BigDecimal d, BigDecimal t2) {
         this.czestProbkCiaglego = czestProbkCiaglego;
         this.krokProbkowaniaCiaglego = krokProbkowaniaCiaglego;
         this.krokProbkowaniaDyskretnego = krokProbkowaniaDyskr;
@@ -35,17 +36,17 @@ public class Parametry implements Serializable {
         this.t2 = t2;
     }
 
-    private Double czestProbkCiaglego, krokProbkowaniaCiaglego, krokProbkowaniaDyskretnego;
+    private BigDecimal czestProbkCiaglego, krokProbkowaniaCiaglego, krokProbkowaniaDyskretnego;
 
     private Parametry() {
 
     }
 
-    public Double getKrokProbkowaniaDyskretnego() {
+    public BigDecimal getKrokProbkowaniaDyskretnego() {
         return krokProbkowaniaDyskretnego;
     }
 
-    public void setKrokProbkowaniaDyskretnego(Double krokProbkowaniaDyskretnego) {
+    public void setKrokProbkowaniaDyskretnego(BigDecimal krokProbkowaniaDyskretnego) {
         this.krokProbkowaniaDyskretnego = krokProbkowaniaDyskretnego;
     }
 
@@ -113,7 +114,7 @@ public class Parametry implements Serializable {
     }
 
     //             Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy, probka koncowa, czas skoku,    //czestotliwosc (probkowania), prawdopodobienstwo
-    private Double A, T, t1, d, kw, t2, n2, ts, f, p;
+    private BigDecimal A, T, t1, d, kw, t2, n2, ts, f, p;
     private boolean czyWczytacZPliku, czyZapisacDoPliku, czyWynikDoPliku;
 
     public boolean isCzyWynikDoPliku() {
@@ -140,19 +141,19 @@ public class Parametry implements Serializable {
         this.czyZapisacDoPliku = czyZapisacDoPliku;
     }
 
-    public Double getP() {
+    public BigDecimal getP() {
         return p;
     }
 
-    public void setP(Double p) {
+    public void setP(BigDecimal p) {
         this.p = p;
     }
 
-    public Double getF() {
+    public BigDecimal getF() {
         return f;
     }
 
-    public void setF(Double f) {
+    public void setF(BigDecimal f) {
         this.f = f;
     }
 
@@ -196,17 +197,17 @@ public class Parametry implements Serializable {
     }
 
     void initJakiesParametry() {
-        czestProbkCiaglego = 10000.0;
+        czestProbkCiaglego = BigDecimal.valueOf(10000.0);
         liczbaPrzedzialowHistogramu = 5;
-        this.A = 1.0;
-        this.T = 2 * Math.PI;
-        t1 = 0.5;
-        d = 7.0;
-        kw = 0.5;
-        this.setTs(3.5);
-        this.setF(1.0);
+        this.A = BigDecimal.valueOf(1.0);
+        this.T = BigDecimal.valueOf(2 * Math.PI);
+        t1 = BigDecimal.valueOf(0.5);
+        d = BigDecimal.valueOf(7.0);
+        kw = BigDecimal.valueOf(0.5);
+        this.setTs(BigDecimal.valueOf(3.5));
+        this.setF(BigDecimal.valueOf(1.0));
         this.setRodzajSygnalu("S3");
-        this.setP(0.05);
+        this.setP(BigDecimal.valueOf(0.05));
         this.setCzyWczytacZPliku(false);
         this.setCzyZapisacDoPliku(true);
         this.setRodzajOperacji("+");
@@ -215,19 +216,19 @@ public class Parametry implements Serializable {
         this.setSciezkaWyniku("wynik.bin");
     }
 
-    public Double getCzestProbkCiaglego() {
+    public BigDecimal getCzestProbkCiaglego() {
         return czestProbkCiaglego;
     }
 
-    public void setCzestProbkCiaglego(Double czestProbkCiaglego) {
+    public void setCzestProbkCiaglego(BigDecimal czestProbkCiaglego) {
         this.czestProbkCiaglego = czestProbkCiaglego;
     }
 
-    public Double getKrokProbkowaniaCiaglego() {
+    public BigDecimal getKrokProbkowaniaCiaglego() {
         return krokProbkowaniaCiaglego;
     }
 
-    public void setKrokProbkowaniaCiaglego(Double krokProbkowaniaCiaglego) {
+    public void setKrokProbkowaniaCiaglego(BigDecimal krokProbkowaniaCiaglego) {
         this.krokProbkowaniaCiaglego = krokProbkowaniaCiaglego;
     }
 
@@ -287,82 +288,82 @@ public class Parametry implements Serializable {
         this.rodzajSygnalu = rodzajSygnalu;
     }
 
-    public Double getA() {
+    public BigDecimal getA() {
         return A;
     }
 
-    public void setA(Double A) {
+    public void setA(BigDecimal A) {
         this.A = A;
     }
 
-    public Double getT() {
+    public BigDecimal getT() {
         return T;
     }
 
-    public void setT(Double T) {
+    public void setT(BigDecimal T) {
         this.T = T;
     }
 
-    public Double getT1() {
+    public BigDecimal getT1() {
         return t1;
     }
 
-    public void setT1(Double t1) {
+    public void setT1(BigDecimal t1) {
         this.t1 = t1;
     }
 
-    public Double getD() {
+    public BigDecimal getD() {
         return d;
     }
 
-    public void setD(Double d) {
+    public void setD(BigDecimal d) {
         this.d = d;
     }
 
-    public Double getKw() {
+    public BigDecimal getKw() {
         return kw;
     }
 
-    public void setKw(Double kw) {
+    public void setKw(BigDecimal kw) {
         this.kw = kw;
     }
 
-    public Double getT2() {
+    public BigDecimal getT2() {
         return t2;
     }
 
-    public void setT2(Double t2) {
+    public void setT2(BigDecimal t2) {
         this.t2 = t2;
     }
 
-    public Double getTs() {
+    public BigDecimal getTs() {
         return ts;
     }
 
-    public void setTs(Double ts) {
+    public void setTs(BigDecimal ts) {
         this.ts = ts;
     }
 
-    public Double getN2() {
+    public BigDecimal getN2() {
         return n2;
     }
 
-    public void setN2(Double n2) {
+    public void setN2(BigDecimal n2) {
         this.n2 = n2;
     }
 
     private void ustawKrokProbkowania() {
-        this.krokProbkowaniaCiaglego = 1.0 / czestProbkCiaglego;
-        this.krokProbkowaniaDyskretnego = 1.0 / this.getF();
+        this.krokProbkowaniaCiaglego = BigDecimal.valueOf(1.0).divide(czestProbkCiaglego);
+        this.krokProbkowaniaDyskretnego = BigDecimal.valueOf(1.0).divide(this.getF());
     }
 
     private void asercjaPoczatkowa() throws ParametryAsercjaException {
         if ("0".equals(this.getRodzajSygnalu())) return;
 
-        if (this.getD().compareTo(0.0) < 0) {
+        if (this.getD().compareTo(BigDecimal.valueOf(0.0)) < 0) {
             throw new ParametryAsercjaException("czas trwania sygnału powinien być liczbą rzeczywistą większą od 0!");
         }
-        if (this.getKw().compareTo(0.0) < 0 || this.getKw().compareTo(1.0) > 0) {
+        if (this.getKw().compareTo(BigDecimal.valueOf(0.0)) < 0 || this.getKw().compareTo(BigDecimal.valueOf(1.0)) > 0) {
             throw new ParametryAsercjaException("współczynnik wypełnienia sygnału powinien być liczbą z przedziału [0.0 ; 1.0]");
         }
         if (this.getRodzajSygnalu().charAt(0) != 'S' || !(Integer.parseInt(this.getRodzajSygnalu().substring(1)) > 0 && Integer.parseInt(this.getRodzajSygnalu().substring(1)) < 12)) {
@@ -372,13 +373,13 @@ public class Parametry implements Serializable {
                 || "S10".equals(this.getRodzajSygnalu())
         ) &&
                 (this.getTs().compareTo(this.getT1()) < 0.0 ||
-                        this.getTs().compareTo(this.getT1() + this.getD()) > 0.0)) {
+                        this.getTs().compareTo(this.getT1().add(this.getD())) > 0.0)) {
             throw new ParametryAsercjaException("czas skoku musi zawierać się w przedziale od czasu początkowego do czasu końca trwania sygnału");
         }
         if (("S11".equals(this.getRodzajSygnalu()))
                 &&
-                (this.getP().compareTo(0.0) < 0.0 ||
-                        this.getTs().compareTo(1.0 + this.getD()) > 0.0)) {
+                (this.getP().compareTo(BigDecimal.valueOf(0.0)) < 0.0 ||
+                        this.getTs().compareTo(BigDecimal.valueOf(1.0).add(this.getD())) > 0.0)) {
             throw new ParametryAsercjaException("Prawdopodobieństwo musi być liczbą rzeczywistą z przedziału [0 ; 1]");
         }
         if (!"+".equals(this.getRodzajOperacji())

@@ -10,19 +10,21 @@ import com.mycompany.cps.Punkt;
 import com.mycompany.cps.Sygnal;
 import com.mycompany.cps.syg.SygnalGenerator;
 
+import java.math.BigDecimal;
+
 /**
  * @author maciek
  */
 public class Probkowanie {
-    private Double krok;
+    private BigDecimal krok;
 
     public Sygnal probkuj(Sygnal s, Parametry p) {
         Sygnal k = new Sygnal();
-        this.krok = 1.0 / p.getF();
+        this.krok = new BigDecimal(1.0).divide(p.getF());
 
-        for (Double t = s.getList().get(0).getX();
-             t <= s.getList().get(s.getList().size() - 1).getX();
-             t += krok) {
+        for (BigDecimal t = s.getCzasPoczatkowy();
+             t <= s.getCzasKoncowy();
+             t=t.add(krok)) {
             k.getList().add(new Punkt(t, s.getWartosc(t)));
         }
         k.setNazwa("Spróbkowany " + s.getNazwa().toLowerCase());

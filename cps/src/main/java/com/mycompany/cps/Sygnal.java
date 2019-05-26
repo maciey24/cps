@@ -36,7 +36,7 @@ public class Sygnal implements Serializable {
         Double N = Double.valueOf(s.getLiczbaProbek());
         Double sum = 0.0;
         for (int i = 0; i < s.getLiczbaProbek() && i < o.getLiczbaProbek(); i++) {
-            sum += (Math.pow(Math.abs(s.getList().get(i).getY() - o.getList().get(i).getY()), 2.0));
+            sum += (Math.pow(Math.abs((s.getY(i).subtract(o.getY(i))).doubleValue()), 2.0));
         }
         Double res;
         res = sum / N;
@@ -46,7 +46,7 @@ public class Sygnal implements Serializable {
     static Double obliczMD(Sygnal s, Sygnal o) {
         Double res = Double.MIN_VALUE;
         for (int i = 0; i < s.getLiczbaProbek() && i < o.getLiczbaProbek(); i++) {
-            Double roznica = s.getList().get(i).getY() - o.getList().get(i).getY();
+            Double roznica = s.getY(i).subtract(o.getY(i)).doubleValue();
             roznica = Math.abs(roznica);
             if (roznica > res) {
                 res = roznica;
@@ -59,12 +59,12 @@ public class Sygnal implements Serializable {
         Double N = Double.parseDouble(Integer.toString(o.getList().size()));
         Double mseSum = 0.0;
         for (int i = 0; i < s.getLiczbaProbek() && i < o.getLiczbaProbek(); i++) {
-            mseSum += (Math.pow(Math.abs(s.getList().get(i).getY() - o.getList().get(i).getY()), 2.0));
+            mseSum += (Math.pow(Math.abs((s.getY(i).subtract(o.getY(i))).doubleValue()), 2.0));
         }
 
         Double licznik = 0.0;
         for (int i = 0; i < s.getLiczbaProbek() && i < o.getLiczbaProbek(); i++) {
-            licznik += Math.pow(s.getList().get(i).getY(), 2.0);
+            licznik += Math.pow(s.getY(i).doubleValue(), 2.0);
         }
         Double res = 10 * Math.log10(licznik / mseSum);
         return res;
@@ -235,7 +235,7 @@ public class Sygnal implements Serializable {
             Double opis = round(min, 2); //"[" + min.toString() + ";" + max.toString() + "]";
             Integer licznik = 0;
             for (Punkt p : this.getList()) {
-                if (p.getY() >= min && p.getY() <= max) {
+                if (p.getY().doubleValue() >= min && p.getY().doubleValue() <= max) {
                     licznik += 1;
                 }
             }
@@ -263,7 +263,7 @@ public class Sygnal implements Serializable {
     private void obliczWartoscSrednia() {
         Double suma = 0.0;
         for (Punkt p : this.getList()) {
-            suma += p.getY();
+            suma += p.getY().doubleValue();
         }
         this.setWartoscSrednia(suma / this.getList().size());
     }
@@ -271,7 +271,7 @@ public class Sygnal implements Serializable {
     private void obliczWartoscSredniaBezwzgledna() {
         Double suma = 0.0;
         for (Punkt p : this.getList()) {
-            suma += Math.abs(p.getY());
+            suma += Math.abs(p.getY().doubleValue());
         }
         this.setWartoscSredniaBezwzgledna(suma / this.getList().size());
     }
@@ -279,7 +279,7 @@ public class Sygnal implements Serializable {
     private void obliczMocSrednia() {
         Double sumaKwadratow = 0.0;
         for (Punkt p : this.getList()) {
-            sumaKwadratow += Math.pow(p.getY(), 2.0);
+            sumaKwadratow += Math.pow(p.getY().doubleValue(), 2.0);
         }
         this.setMocSrednia(sumaKwadratow / this.getList().size());
     }
@@ -288,7 +288,7 @@ public class Sygnal implements Serializable {
         this.obliczWartoscSrednia();
         Double sumaKwadratowOdchylen = 0.0;
         for (Punkt p : this.getList()) {
-            sumaKwadratowOdchylen += Math.pow(p.getY() - this.getWartoscSrednia(), 2.0);
+            sumaKwadratowOdchylen += Math.pow(p.getY().doubleValue() - this.getWartoscSrednia(), 2.0);
         }
         this.setWariancja(sumaKwadratowOdchylen / this.getList().size());
     }
@@ -310,27 +310,27 @@ public class Sygnal implements Serializable {
         return parametry;
     }
 
-    public Double getWartosc(Double t) {
-        Double krok = this.getList().get(1).getX() - this.getList().get(0).getX();
-        Double t1 = this.getList().get(0).getX();
-        Double tz = this.getList().get(this.getList().size() - 1).getX();
-        if (t < t1 || t > tz) {
-            return 0.0;
+    public BigDecimal getWartosc(BigDecimal t) {
+        BigDecimal krok = this.getList().get(1).getX().subtract(this.getList().get(0).getX());
+        BigDecimal startTime = this.getList().get(0).getX();
+        BigDecimal endTime = this.getList().get(this.getList().size() - 1).getX();
+        if (t.doubleValue() < startTime.doubleValue() || t.doubleValue() > endTime.doubleValue()) {
+            return new BigDecimal(0.0);
         }
-        Double ind = Math.floor((t - t1) / krok);
+        Double ind = Math.floor(((t.subtract(startTime))).divide(krok).doubleValue());
         int i = ind.intValue();
         if (this.getList().get(i).getX().equals(t)) {
-            return this.getList().get(i).getY();
+            return this.getY(i);
         } else {
-            return (this.getList().get(i).getY() + this.getList().get(i + 1).getY()) / 2.0;
+            return (this.getY(i).add(this.getY(i + 1))).divide(new BigDecimal(2.0));
         }
     }
 
     public Double obliczMin() {
         Double min = Double.POSITIVE_INFINITY;
         for (Punkt p : this.getList()) {
-            if (p.getY() < min) {
-                min = p.getY();
+            if (p.getY().doubleValue() < min) {
+                min = p.getY().doubleValue();
             }
         }
         return min;
@@ -339,21 +339,34 @@ public class Sygnal implements Serializable {
     public Double obliczMax() {
         Double max = Double.NEGATIVE_INFINITY;
         for (Punkt p : this.getList()) {
-            if (p.getY() > max) {
-                max = p.getY();
+            if (p.getY().doubleValue() > max) {
+                max = p.getY().doubleValue();
             }
         }
         return max;
     }
 
-    public Double obliczKrokProbkowania() {
+    public BigDecimal obliczKrokProbkowania() {
         if (this.getList().size() >= 2)
-            return this.getList().get(1).getX() - this.getList().get(0).getX();
+            return this.getList().get(1).getX().subtract(this.getList().get(0).getX());
         else
             throw new IndexOutOfBoundsException();
     }
 
     public int getLiczbaProbek() {
         return this.getList().size();
+    }
+
+    //pobiera drugą współrzędną i-tej próbki
+    private BigDecimal getY(int index) {
+        return this.getList().get(index).getY();
+    }
+
+    public BigDecimal getCzasPoczatkowy() {
+        return this.getList().get(0).getX();
+    }
+
+    public BigDecimal getCzasKoncowy() {
+        return this.getList().get(this.getList().size() - 1).getX();
     }
 }

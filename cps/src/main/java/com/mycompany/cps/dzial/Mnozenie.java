@@ -5,6 +5,8 @@
  */
 package com.mycompany.cps.dzial;
 
+import java.math.BigDecimal;
+
 /**
  * @author maciek
  */
@@ -15,8 +17,8 @@ public class Mnozenie extends Dzialanie {
     }
 
     @Override
-    public Double dz(Double d1, Double d2) {
-        return d1 * d2;
+    public BigDecimal dz(BigDecimal d1, BigDecimal d2) {
+        return d1.multiply(d2);
     }
 
 }

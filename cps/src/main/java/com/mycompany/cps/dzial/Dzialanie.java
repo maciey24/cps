@@ -5,6 +5,8 @@
  */
 package com.mycompany.cps.dzial;
 
+import java.math.BigDecimal;
+
 /**
  * @author maciek
  */
@@ -24,7 +26,7 @@ public abstract class Dzialanie {
     }
 
     //TODO: przerobic na dzialanie na punktach a nie na Double
-    public Double dz(Double d1, Double d2) throws DzialanieException {
+    public BigDecimal dz(BigDecimal d1, BigDecimal d2) throws DzialanieException {
         return null;
     }
 

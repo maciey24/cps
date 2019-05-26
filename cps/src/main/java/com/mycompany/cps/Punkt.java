@@ -6,6 +6,7 @@
 package com.mycompany.cps;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,13 +16,13 @@ import java.util.List;
  * @author maciek
  */
 public class Punkt implements Serializable {
-    private ArrayList<Double> wspolrzedne;
+    private ArrayList<BigDecimal> wspolrzedne;
 
-    public void setWspolrzedne(ArrayList<Double> wspolrzedne) {
+    public void setWspolrzedne(ArrayList<BigDecimal> wspolrzedne) {
         this.wspolrzedne = wspolrzedne;
     }
 
-    public ArrayList<Double> getWspolrzedne() {
+    public ArrayList<BigDecimal> getWspolrzedne() {
         return wspolrzedne;
     }
 
@@ -32,23 +33,28 @@ public class Punkt implements Serializable {
     public Punkt clone() {
         Punkt res = new Punkt();
         res.wspolrzedne = new ArrayList<>();
-        for (Double d : wspolrzedne) {
+        for (BigDecimal d : wspolrzedne) {
             res.wspolrzedne.add(d);
         }
         return res;
     }
 
-    public Punkt(List<Double> listaWspolrzednych) {
-        this.wspolrzedne = (ArrayList<Double>) listaWspolrzednych;
+    public Punkt(List<BigDecimal> listaWspolrzednych) {
+        this.wspolrzedne = (ArrayList<BigDecimal>) listaWspolrzednych;
     }
 
     public Punkt(int x, int y) {
         this.wspolrzedne = new ArrayList<>();
-        this.wspolrzedne.add(Double.parseDouble(String.valueOf(x)));
-        this.wspolrzedne.add(Double.parseDouble(String.valueOf(y)));
+        this.wspolrzedne.add(BigDecimal.valueOf(x));
+        this.wspolrzedne.add(BigDecimal.valueOf(y));
     }
 
     public Punkt(Double x, Double y) {
+        this.wspolrzedne = new ArrayList<>();
+        this.wspolrzedne.add(BigDecimal.valueOf(x));
+        this.wspolrzedne.add(BigDecimal.valueOf(y));
+    }
+    public Punkt(BigDecimal x, BigDecimal y) {
         this.wspolrzedne = new ArrayList<>();
         this.wspolrzedne.add(x);
         this.wspolrzedne.add(y);
@@ -56,12 +62,18 @@ public class Punkt implements Serializable {
 
     public Punkt(int x, int y, int z) {
         this.wspolrzedne = new ArrayList<>();
-        this.wspolrzedne.add(Double.parseDouble(String.valueOf(x)));
-        this.wspolrzedne.add(Double.parseDouble(String.valueOf(y)));
-        this.wspolrzedne.add(Double.parseDouble(String.valueOf(z)));
+        this.wspolrzedne.add(BigDecimal.valueOf(x));
+        this.wspolrzedne.add(BigDecimal.valueOf(y));
+        this.wspolrzedne.add(BigDecimal.valueOf(z));
     }
 
     public Punkt(Double x, Double y, Double z) {
+        this.wspolrzedne = new ArrayList<>();
+        this.wspolrzedne.add(BigDecimal.valueOf(x));
+        this.wspolrzedne.add(BigDecimal.valueOf(y));
+        this.wspolrzedne.add(BigDecimal.valueOf(z));
+    }
+    public Punkt(BigDecimal x, BigDecimal y, BigDecimal z) {
         this.wspolrzedne = new ArrayList<>();
         this.wspolrzedne.add(x);
         this.wspolrzedne.add(y);
@@ -71,19 +83,19 @@ public class Punkt implements Serializable {
     public static class PunktCzasComparator implements Comparator<Punkt> {
         @Override
         public int compare(Punkt o1, Punkt o2) {
-            return Double.compare(o1.getX(), o2.getX());
+            return Double.compare(o1.getX().doubleValue(), o2.getX().doubleValue());
         }
     }
 
-    public Double getX() {
+    public BigDecimal getX() {
         return this.getWspolrzedne().get(0);
     }
 
-    public Double getY() {
+    public BigDecimal getY() {
         return this.getWspolrzedne().get(1);
     }
 
-    public void setY(Double wartosc) {
+    public void setY(BigDecimal wartosc) {
         this.getWspolrzedne().set(1, wartosc);
     }
 

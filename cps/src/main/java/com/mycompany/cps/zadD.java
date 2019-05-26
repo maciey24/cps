@@ -23,14 +23,14 @@ public class zadD {
     static String sciezkaParametrow1 = "syg1.config";
 
     public static void main(String[] args) {
-        Sygnal s1, sprobkowany, skwantyzowany, odtworzony = null;
+        Sygnal wejsciowy, sprobkowany, skwantyzowany, odtworzony = null;
         Parametry p1 = Parametry.wczytajParametry(sciezkaParametrow1);
 
         SygnalGenerator sg1 = wybierzSygnal(p1);
-        s1 = stworzSygnal(p1, sg1);
+        wejsciowy = stworzSygnal(p1, sg1);
 
         Probkowanie pr = new Probkowanie();
-        sprobkowany = pr.probkuj(s1, p1);
+        sprobkowany = pr.probkuj(wejsciowy, p1);
 
         Kwantyzacja kw = new Kwantyzacja();
         skwantyzowany = kw.kwantyzuj(sprobkowany, p1);
@@ -42,14 +42,13 @@ public class zadD {
             System.out.println(ex.getMessage());
         }
 
-
         dodajSygnal(skwantyzowany);
         dodajSygnal(odtworzony);
         dodajSygnal(sprobkowany);
-        dodajSygnal(s1);
+        dodajSygnal(wejsciowy);
         Wykres.rysuj("Cyfrowe przetwarzanie sygnałów, zad. 2.", "Wykres", listaSygnalow);
-        miaryPodobienstwa(s1, odtworzony);
-//        Histogram.rysuj(s1, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału", p1.getLiczbaPrzedzialowHistogramu());
+        miaryPodobienstwa(wejsciowy, odtworzony);
+//        Histogram.rysuj(wejsciowy, "Cyfrowe przetwarzanie sygnałów, zad. 1.", "Histogram amplitudy sygnału", p1.getLiczbaPrzedzialowHistogramu());
     }
 
     private static SygnalGenerator wybierzSygnal(Parametry p) {

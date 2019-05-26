@@ -5,6 +5,8 @@
  */
 package com.mycompany.cps.dzial;
 
+import java.math.BigDecimal;
+
 /**
  * @author maciek
  */
@@ -16,9 +18,9 @@ public class Dzielenie extends Dzialanie {
 
 
     @Override
-    public Double dz(Double d1, Double d2) throws DzielenieException {
+    public BigDecimal dz(BigDecimal d1, BigDecimal d2) throws DzielenieException {
         if (!d2.equals(0.0)) {
-            return d1 / d2;
+            return d1.divide(d2);
         } else throw new DzielenieException("Dzielenie przez zero");
     }
 
