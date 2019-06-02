@@ -19,22 +19,17 @@ import java.util.Comparator;
  * @author maciek
  */
 public class Ekstrapolacja0 implements Rekonstrukcja {
-    private BigDecimal krok;
 
     @Override
-    public Sygnal odtworz(Sygnal s, BigDecimal krok) {
+    public Sygnal odtworz(Sygnal s, final BigDecimal krok) {
         Sygnal o = new Sygnal();
-        this.krok = krok;
         int liczbaProbekWCzasieProbkowania = s.obliczKrokProbkowania().divide(krok).intValue();
-
         for (int i = 0; i < s.getLiczbaProbek(); i++) {
-            o.add(new Punkt(s.getList().get(i).getWspolrzedne()));
+            o.add(new Punkt(s.getWspolrzedne(i)));
             for (int j = 1; j < liczbaProbekWCzasieProbkowania; j++) {
                 o.add(new Punkt(s.getX(i).add(BigDecimal.valueOf(j).multiply(krok)), s.getY(i)));
             }
         }
-        Comparator c = new Punkt.PunktCzasComparator();
-        Collections.sort(o.getList(), c);
 
         o.setNazwa("Odtworzony z " + s.getNazwa().toLowerCase());
         return o;

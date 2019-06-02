@@ -24,8 +24,8 @@ public class SygSinusoidalnyWyprostowanyDwupolowkowoGenerator extends SygnalGene
     @Override
     public ArrayList<Punkt> sygnal(Parametry p) {
         ArrayList<Punkt> res = new ArrayList<>();
-        for (BigDecimal t = p.getT1(); t.compareTo((p.getT1().add(p.getD()))) <= 0; t=t.add(p.getKrokProbkowaniaCiaglego())) {
-            res.add(new Punkt(t, p.getA().multiply(BigDecimal.valueOf(Math.abs(sin(((2.0 * Math.PI))))).divide(p.getT())).multiply(t.subtract(p.getT1()))));
+        for (BigDecimal t = p.getT1(); t.compareTo(p.getT1().add(p.getD())) < 0; t = t.add(p.getKrokProbkowaniaCiaglego())) {
+            res.add(new Punkt(t, p.getA().multiply(BigDecimal.valueOf(abs(sin(((2.0 * PI) / p.getT().doubleValue()) * (t.subtract( p.getT1())).doubleValue()))))));
         }
         return res;
     }

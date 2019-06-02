@@ -54,6 +54,7 @@ public class Punkt implements Serializable {
         this.wspolrzedne.add(BigDecimal.valueOf(x));
         this.wspolrzedne.add(BigDecimal.valueOf(y));
     }
+
     public Punkt(BigDecimal x, BigDecimal y) {
         this.wspolrzedne = new ArrayList<>();
         this.wspolrzedne.add(x);
@@ -73,6 +74,7 @@ public class Punkt implements Serializable {
         this.wspolrzedne.add(BigDecimal.valueOf(y));
         this.wspolrzedne.add(BigDecimal.valueOf(z));
     }
+
     public Punkt(BigDecimal x, BigDecimal y, BigDecimal z) {
         this.wspolrzedne = new ArrayList<>();
         this.wspolrzedne.add(x);
@@ -83,7 +85,8 @@ public class Punkt implements Serializable {
     public static class PunktCzasComparator implements Comparator<Punkt> {
         @Override
         public int compare(Punkt o1, Punkt o2) {
-            return Double.compare(o1.getX().doubleValue(), o2.getX().doubleValue());
+//            return Double.compare(o1.getX().doubleValue(), o2.getX().doubleValue());
+            return (o1.getX().compareTo(o2.getX()));
         }
     }
 

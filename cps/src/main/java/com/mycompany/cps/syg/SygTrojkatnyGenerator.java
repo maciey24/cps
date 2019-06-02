@@ -8,6 +8,7 @@ package com.mycompany.cps.syg;
 import com.mycompany.cps.Parametry;
 import com.mycompany.cps.Punkt;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -21,12 +22,11 @@ public class SygTrojkatnyGenerator extends SygnalGenerator {
     @Override
     public ArrayList<Punkt> sygnal(Parametry p) {
         ArrayList<Punkt> res = new ArrayList<>();
-        for (Double t = p.getT1(); t < (p.getT1() + p.getD()); t += p.getKrokProbkowaniaCiaglego()) {
-//            t = round(t, Double.toString(Math.floor(p.getCzestProbkCiaglego())).length(), false);
-            if (t < ((Math.floor((t - p.getT1()) / p.getT()) * p.getT() + p.getT1()) + p.getKw() * (p.getT()))) {
-                res.add(new Punkt(t, ((p.getA()) / (p.getKw() * p.getT())) * (t - Math.floor((t - p.getT1()) / p.getT()) * p.getT() - p.getT1())));
+        for (BigDecimal t = p.getT1(); t.compareTo(p.getT1().add(p.getD())) < 0; t = t.add(p.getKrokProbkowaniaCiaglego())) {
+            if (t.compareTo(BigDecimal.valueOf(((Math.floor((t.doubleValue() - p.getT1().doubleValue()) / p.getT().doubleValue()) * p.getT().doubleValue() + p.getT1().doubleValue()) + p.getKw().doubleValue() * (p.getT().doubleValue())))) < 0) {
+                res.add(new Punkt(t, BigDecimal.valueOf(((p.getA().doubleValue()) / (p.getKw().doubleValue() * p.getT().doubleValue())) * (t.doubleValue() - Math.floor((t.doubleValue() - p.getT1().doubleValue()) / p.getT().doubleValue()) * p.getT().doubleValue() - p.getT1().doubleValue()))));
             } else {
-                res.add(new Punkt(t, (((-p.getA()) / ((1.0 - p.getKw()) * p.getT())) * (t - Math.floor((t - p.getT1()) / p.getT()) * p.getT() - p.getT1())) + ((p.getA()) / ((1.0 - p.getKw())))));
+                res.add(new Punkt(t, BigDecimal.valueOf((((-p.getA().doubleValue()) / ((1.0 - p.getKw().doubleValue()) * p.getT().doubleValue())) * (t.doubleValue() - Math.floor((t.doubleValue() - p.getT1().doubleValue()) / p.getT().doubleValue()) * p.getT().doubleValue() - p.getT1().doubleValue())) + ((p.getA().doubleValue()) / ((1.0 - p.getKw().doubleValue()))))));
             }
         }
         return res;

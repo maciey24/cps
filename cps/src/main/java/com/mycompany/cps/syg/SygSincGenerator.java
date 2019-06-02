@@ -8,7 +8,10 @@ package com.mycompany.cps.syg;
 import com.mycompany.cps.Parametry;
 import com.mycompany.cps.Punkt;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+
+import static java.lang.Math.sin;
 
 /**
  * @author maciek
@@ -21,21 +24,28 @@ public class SygSincGenerator extends SygnalGenerator {
     @Override
     public ArrayList<Punkt> sygnal(Parametry p) {
         ArrayList<Punkt> res = new ArrayList<>();
-        for (Double t = p.getT1(); t < (p.getT1() + p.getD()); t += p.getKrokProbkowaniaCiaglego()) {
-            if (t.compareTo(0.0) == 0.0) {
-                res.add(new Punkt(t / p.getKrokProbkowaniaDyskretnego(), 1.0));
+        for (BigDecimal t = p.getT1(); t.compareTo((p.getT1().add(p.getD()))) <= 0; t = t.add(p.getKrokProbkowaniaCiaglego())) {
+            if (t.equals(BigDecimal.valueOf(0.0))) {
+                res.add(new Punkt(t.divide(p.getKrokProbkowaniaDyskretnego()) , BigDecimal.valueOf(1.0)));
             } else {
-                res.add(new Punkt(t / p.getKrokProbkowaniaDyskretnego(), Math.sin(t) / t));
+                res.add(new Punkt(t.divide(p.getKrokProbkowaniaDyskretnego()), BigDecimal.valueOf(sin(t.doubleValue())).divide(t)));
             }
         }
         return res;
     }
 
+    public BigDecimal getWartosc(BigDecimal x) {
+        if (x.equals(BigDecimal.valueOf(0.0))) {
+            return BigDecimal.valueOf(1.0);
+        } else {
+            return BigDecimal.valueOf(sin(Math.PI * x.doubleValue()) / (Math.PI * x.doubleValue()));
+        }
+    }
     public Double getWartosc(Double x) {
-        if (x.compareTo(0.0) == 0.0) {
+        if (x.equals(0.0)) {
             return 1.0;
         } else {
-            return Math.sin(Math.PI * x) / (Math.PI * x);
+            return (sin(Math.PI * x.doubleValue()) / (Math.PI * x.doubleValue()));
         }
     }
 }

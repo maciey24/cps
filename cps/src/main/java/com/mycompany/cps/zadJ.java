@@ -19,7 +19,6 @@ import java.util.List;
 public class zadJ {
 
     static ArrayList<Sygnal> listaSygnalow = new ArrayList<>();
-    static ArrayList<String> etykietySygnalow = new ArrayList<>();
     static String sciezkaParametrow1 = "syg1.config";
     static String sciezkaParametrow2 = "syg2.config";
 
@@ -71,7 +70,7 @@ public class zadJ {
 
     }
 
-    private static SygnalGenerator wybierzSygnal(Parametry p) {
+    protected static SygnalGenerator wybierzSygnal(Parametry p) {
         if (p == null) return null;
         if (p.isCzyWczytacZPliku()) return null;
         if ("0".equals(p.getRodzajSygnalu())) return null;
@@ -115,12 +114,12 @@ public class zadJ {
         return generatorSygnalu;
     }
 
-    private static void dodajSygnal(Sygnal s) {
+    protected static void dodajSygnal(Sygnal s) {
         if (s == null) return;
         listaSygnalow.add(s);
     }
 
-    private static Dzialanie wybierzDzialanie(Parametry p) {
+    protected static Dzialanie wybierzDzialanie(Parametry p) {
         if (p == null) return null;
         if ("0".equals(p.getRodzajSygnalu())) return null;
         if ("0".equals(p.getRodzajOperacji())) return null;
@@ -143,17 +142,17 @@ public class zadJ {
         return dz;
     }
 
-    private static Sygnal stworzSygnal(Parametry p, SygnalGenerator sg) {
+    protected static Sygnal stworzSygnal(Parametry p, SygnalGenerator sg) {
         Sygnal s = null;
         if (p.isCzyWczytacZPliku()) {
             s = Sygnal.wczytajZPliku(p.getSciezkaWczytywania());
-        } else if (!"0".equals(p.getRodzajSygnalu())) {
+        } else if (!p.getRodzajSygnalu().equalsIgnoreCase("0")&&!p.getRodzajSygnalu().equalsIgnoreCase("s0")) {
             s = new Sygnal(sg, p);
         }
         return s;
     }
 
-    private static void wypiszParametry(Sygnal s) {
+    protected static void wypiszParametry(Sygnal s) {
         if (s == null) return;
         s.obliczWszystkieParametry();
         System.out.println(s.parametryToString());

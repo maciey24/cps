@@ -7,9 +7,7 @@ package com.mycompany.cps;
 
 import com.mycompany.cps.dzial.Dzialanie;
 import com.mycompany.cps.syg.SygnalGenerator;
-import com.thoughtworks.xstream.core.util.CustomObjectInputStream;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -327,9 +325,9 @@ public class Sygnal implements Serializable {
     }
 
     public BigDecimal obliczMin() {
-        BigDecimal min = BigDecimal.valueOf(Double.POSITIVE_INFINITY);
+        BigDecimal min = this.getY(0);
         for (Punkt p : this.getList()) {
-            if (p.getY().compareTo(min)<0) {
+            if (p.getY().compareTo(min) < 0) {
                 min = p.getY();
             }
         }
@@ -337,7 +335,7 @@ public class Sygnal implements Serializable {
     }
 
     public BigDecimal obliczMax() {
-        BigDecimal max = BigDecimal.valueOf(Double.NEGATIVE_INFINITY);
+        BigDecimal max = this.getY(0);
         for (Punkt p : this.getList()) {
             if (p.getY().compareTo(max) > 0) {
                 max = p.getY();
@@ -361,8 +359,13 @@ public class Sygnal implements Serializable {
     public BigDecimal getY(int index) {
         return this.getList().get(index).getY();
     }
+
     public BigDecimal getX(int index) {
         return this.getList().get(index).getX();
+    }
+
+    public ArrayList<BigDecimal> getWspolrzedne(int index) {
+        return this.getList().get(index).getWspolrzedne();
     }
 
     public BigDecimal getCzasPoczatkowy() {
@@ -375,5 +378,13 @@ public class Sygnal implements Serializable {
 
     public void add(Punkt punkt) {
         this.getList().add(punkt);
+    }
+
+    public void isValid() {
+        BigDecimal krok = this.obliczKrokProbkowania();
+        for (int i = 1; i < this.getLiczbaProbek(); i++) {
+            if (this.getX(i).subtract(this.getX(i - 1)).compareTo(krok) != 0)
+                System.out.println("uwaga");
+        }
     }
 }

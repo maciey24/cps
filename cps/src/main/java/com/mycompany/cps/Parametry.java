@@ -22,6 +22,19 @@ import java.util.logging.Logger;
  */
 public class Parametry implements Serializable {
 
+    private BigDecimal A;  //Amplituda
+    private BigDecimal T;  //okres podstawowy,
+    private BigDecimal t1; //czas poczatkowy,
+    private BigDecimal d;  //czas trwania sygnalu,
+    private BigDecimal kw; //wspolczynnik wypelnienia,
+    private BigDecimal t2; //czas koncowy,
+    private BigDecimal n2; //probka koncowa,
+    private BigDecimal ts; //czas skoku,
+    private BigDecimal f;  //czestotliwosc (probkowania),
+    private BigDecimal p;  //prawdopodobienstwo
+    private boolean czyWczytacZPliku, czyZapisacDoPliku, czyWynikDoPliku;
+    private String rodzajSygnalu, rodzajOperacji, rodzajKwantyzacji, rodzajRekonstrukcji;
+
     public Parametry(BigDecimal czestProbkCiaglego,
                      BigDecimal krokProbkowaniaCiaglego,
                      BigDecimal krokProbkowaniaDyskr, BigDecimal A, BigDecimal T, BigDecimal t1,
@@ -59,9 +72,6 @@ public class Parametry implements Serializable {
     public void setLiczbaPoziomowKwantyzacji(Integer liczbaPoziomowKwantyzacji) {
         this.liczbaPoziomowKwantyzacji = liczbaPoziomowKwantyzacji;
     }
-
-    private Double wartoscSrednia, wartoscSredniaBezwzgledna, wartoscSkuteczna, wariancja, mocSrednia;
-    private String rodzajSygnalu, rodzajOperacji, rodzajKwantyzacji, rodzajRekonstrukcji;
 
     public String getRodzajRekonstrukcji() {
         return rodzajRekonstrukcji;
@@ -113,9 +123,6 @@ public class Parametry implements Serializable {
         this.sciezkaWczytywania = sciezkaWczytywania;
     }
 
-    //             Amplituda, okres podstawowy, czas poczatkowy, czas trwania sygnalu, wspolczynnik wypelnienia, czas koncowy, probka koncowa, czas skoku,    //czestotliwosc (probkowania), prawdopodobienstwo
-    private BigDecimal A, T, t1, d, kw, t2, n2, ts, f, p;
-    private boolean czyWczytacZPliku, czyZapisacDoPliku, czyWynikDoPliku;
 
     public boolean isCzyWynikDoPliku() {
         return czyWynikDoPliku;
@@ -238,46 +245,6 @@ public class Parametry implements Serializable {
 
     public void setLiczbaPrzedzialowHistogramu(Integer liczbaPrzedzialowHistogramu) {
         this.liczbaPrzedzialowHistogramu = liczbaPrzedzialowHistogramu;
-    }
-
-    public Double getWartoscSrednia() {
-        return wartoscSrednia;
-    }
-
-    public void setWartoscSrednia(Double wartoscSrednia) {
-        this.wartoscSrednia = wartoscSrednia;
-    }
-
-    public Double getWartoscSredniaBezwzgledna() {
-        return wartoscSredniaBezwzgledna;
-    }
-
-    public void setWartoscSredniaBezwzgledna(Double wartoscSredniaBezwzgledna) {
-        this.wartoscSredniaBezwzgledna = wartoscSredniaBezwzgledna;
-    }
-
-    public Double getWartoscSkuteczna() {
-        return wartoscSkuteczna;
-    }
-
-    public void setWartoscSkuteczna(Double wartoscSkuteczna) {
-        this.wartoscSkuteczna = wartoscSkuteczna;
-    }
-
-    public Double getWariancja() {
-        return wariancja;
-    }
-
-    public void setWariancja(Double wariancja) {
-        this.wariancja = wariancja;
-    }
-
-    public Double getMocSrednia() {
-        return mocSrednia;
-    }
-
-    public void setMocSrednia(Double mocSrednia) {
-        this.mocSrednia = mocSrednia;
     }
 
     public String getRodzajSygnalu() {
