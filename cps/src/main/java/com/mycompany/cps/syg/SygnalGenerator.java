@@ -53,6 +53,10 @@ public abstract class SygnalGenerator {
         return min + r.nextDouble() * (max - min);
     }
 
+    static BigDecimal rand(BigDecimal min, BigDecimal max) {
+        return BigDecimal.valueOf(rand(min.doubleValue(), max.doubleValue()));
+    }
+
     //to jest jedyna niezbyt poprawna funkcja chyba
     static Double randGauss(double min, double max) {
         Random r = new Random();
@@ -62,6 +66,10 @@ public abstract class SygnalGenerator {
                 return res;
             }
         } while (true);
+    }
+
+    static BigDecimal randGauss(BigDecimal min, BigDecimal max) {
+        return BigDecimal.valueOf(randGauss(min.doubleValue(), max.doubleValue()));
     }
 
 //    protected static Double round(double value, int places, boolean br) {

@@ -23,7 +23,7 @@ public class Probkowanie {
         this.krok = new BigDecimal(1.0).divide(p.getF());
 
         for (BigDecimal t = s.getCzasPoczatkowy();
-             t <= s.getCzasKoncowy();
+             t.compareTo(s.getCzasKoncowy())<=0;
              t=t.add(krok)) {
             k.getList().add(new Punkt(t, s.getWartosc(t)));
         }

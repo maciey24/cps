@@ -8,9 +8,11 @@ package com.mycompany.cps.dzial;
 import com.mycompany.cps.Parametry;
 import com.mycompany.cps.Sygnal;
 
+import java.math.BigDecimal;
+
 /**
  * @author maciek
  */
 public interface Rekonstrukcja {
-    public abstract Sygnal odtworz(Sygnal s, Double krok);
+    public abstract Sygnal odtworz(Sygnal s, BigDecimal krok);
 }

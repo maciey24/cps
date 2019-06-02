@@ -71,7 +71,7 @@ public class Sygnal implements Serializable {
     }
 
     static Double obliczPSNR(Sygnal s, Sygnal o) {
-        Double licznik = s.obliczMax();
+        Double licznik = s.obliczMax().doubleValue();
         Double res = 10 * Math.log10(licznik / Sygnal.obliczMSE(s, o));
         return res;
     }
@@ -222,7 +222,7 @@ public class Sygnal implements Serializable {
     public HashMap<Double, Integer> histogram(int liczbaPrzedzialow) {
         HashMap<Double, Integer> h = new HashMap<>();
         ArrayList<Double> krancePrzedzialow = new ArrayList<>();
-        Double min = this.obliczMin(), max = this.obliczMax();
+        Double min = this.obliczMin().doubleValue(), max = this.obliczMax().doubleValue();
         Double A = max - min;
         Double krok = A / liczbaPrzedzialow;
         for (int i = 0; i < liczbaPrzedzialow; i++) {
@@ -326,21 +326,21 @@ public class Sygnal implements Serializable {
         }
     }
 
-    public Double obliczMin() {
-        Double min = Double.POSITIVE_INFINITY;
+    public BigDecimal obliczMin() {
+        BigDecimal min = BigDecimal.valueOf(Double.POSITIVE_INFINITY);
         for (Punkt p : this.getList()) {
-            if (p.getY().doubleValue() < min) {
-                min = p.getY().doubleValue();
+            if (p.getY().compareTo(min)<0) {
+                min = p.getY();
             }
         }
         return min;
     }
 
-    public Double obliczMax() {
-        Double max = Double.NEGATIVE_INFINITY;
+    public BigDecimal obliczMax() {
+        BigDecimal max = BigDecimal.valueOf(Double.NEGATIVE_INFINITY);
         for (Punkt p : this.getList()) {
-            if (p.getY().doubleValue() > max) {
-                max = p.getY().doubleValue();
+            if (p.getY().compareTo(max) > 0) {
+                max = p.getY();
             }
         }
         return max;
@@ -358,8 +358,11 @@ public class Sygnal implements Serializable {
     }
 
     //pobiera drugą współrzędną i-tej próbki
-    private BigDecimal getY(int index) {
+    public BigDecimal getY(int index) {
         return this.getList().get(index).getY();
+    }
+    public BigDecimal getX(int index) {
+        return this.getList().get(index).getX();
     }
 
     public BigDecimal getCzasPoczatkowy() {
@@ -368,5 +371,9 @@ public class Sygnal implements Serializable {
 
     public BigDecimal getCzasKoncowy() {
         return this.getList().get(this.getList().size() - 1).getX();
+    }
+
+    public void add(Punkt punkt) {
+        this.getList().add(punkt);
     }
 }

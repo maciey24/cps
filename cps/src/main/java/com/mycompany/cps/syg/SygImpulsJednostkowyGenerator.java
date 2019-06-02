@@ -8,6 +8,7 @@ package com.mycompany.cps.syg;
 import com.mycompany.cps.Parametry;
 import com.mycompany.cps.Punkt;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -21,15 +22,13 @@ public class SygImpulsJednostkowyGenerator extends SygnalGenerator {
     @Override
     public ArrayList<Punkt> sygnal(Parametry p) {
         ArrayList<Punkt> res = new ArrayList<>();
-        Double t;
-        for (t = p.getT1(); t < p.getTs(); t += p.getKrokProbkowaniaDyskretnego()) {
-//            t = round(t, Double.toString(Math.floor(p.getCzestProbkCiaglego())).length(), false);
-            res.add(new Punkt(t, 0.0));
+        BigDecimal t;
+        for (t = p.getT1(); t.compareTo(p.getTs()) < 0; t= t.add(p.getKrokProbkowaniaDyskretnego())) {
+            res.add(new Punkt(t, BigDecimal.valueOf(0.0)));
         }
         res.add(new Punkt(t, p.getA()));
-        for (t += p.getKrokProbkowaniaDyskretnego(); t < (p.getT1() + p.getD()); t += p.getKrokProbkowaniaDyskretnego()) {
-//            t = round(t, Double.toString(Math.floor(p.getCzestProbkCiaglego())).length(), false);
-            res.add(new Punkt(t, 0.0));
+        for (t=t.add(p.getKrokProbkowaniaDyskretnego()); t.compareTo(p.getT1().add(p.getD())) <= 0; t=t.add(p.getKrokProbkowaniaDyskretnego())) {
+            res.add(new Punkt(t, BigDecimal.valueOf(0.0)));
         }
         return res;
     }

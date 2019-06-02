@@ -10,6 +10,7 @@ import com.mycompany.cps.Punkt;
 import com.mycompany.cps.Sygnal;
 import com.mycompany.cps.syg.SygnalGenerator;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -17,23 +18,23 @@ import java.util.Collections;
  * @author maciek
  */
 public class Kwantyzacja {
-    private Double krok;
-    private ArrayList<Double> poziomy;
+    private BigDecimal krok;
+    private ArrayList<BigDecimal> poziomy;
 
     public Sygnal kwantyzuj(Sygnal s, Parametry p) {
         Sygnal k = new Sygnal();
-        Double min = s.obliczMin();
-        Double max = s.obliczMax();
-        krok = (max - min) / p.getLiczbaPoziomowKwantyzacji().doubleValue();
+        BigDecimal min = s.obliczMin();
+        BigDecimal max = s.obliczMax();
+        krok = (max.subtract(min)).divide(BigDecimal.valueOf(p.getLiczbaPoziomowKwantyzacji()));
 
         poziomy = new ArrayList<>();
         for (int i = 0; i < p.getLiczbaPoziomowKwantyzacji(); i++) {
-            poziomy.add(min + i * krok);
+            poziomy.add(min.add(BigDecimal.valueOf(i).multiply(krok)));
         }
         Collections.reverse(poziomy);
 
         for (Punkt pkt : s.getList()) {
-            k.getList().add(new Punkt(pkt.getX(), this.wartoscPoKwantyzacji(pkt.getY(), p)));
+            k.add(new Punkt(pkt.getX(), this.wartoscPoKwantyzacji(pkt.getY(), p)));
         }
         if ("q1".equals(p.getRodzajKwantyzacji().toLowerCase())) {
             k.setNazwa("Skwantyzowany z obcięciem " + s.getNazwa().toLowerCase());
@@ -44,16 +45,16 @@ public class Kwantyzacja {
         return k;
     }
 
-    private Double wartoscPoKwantyzacji(Double y, Parametry p) {
+    private BigDecimal wartoscPoKwantyzacji(BigDecimal y, Parametry p) {
         if ("q1".equals(p.getRodzajKwantyzacji().toLowerCase())) {
-            for (Double poziom : poziomy) {
+            for (BigDecimal poziom : poziomy) {
                 if (y.compareTo(poziom) >= 0.0) {
                     return poziom;
                 }
             }
         } else if ("q2".equals(p.getRodzajKwantyzacji().toLowerCase())) {
-            for (Double poziom : poziomy) {
-                if ((new Double(y + 0.5 * krok).compareTo(poziom)) >= 0.0) {
+            for (BigDecimal poziom : poziomy) {
+                if (((y.add(BigDecimal.valueOf(0.5).multiply(krok))).compareTo(poziom)) >= 0.0) {
                     return poziom;
                 }
             }

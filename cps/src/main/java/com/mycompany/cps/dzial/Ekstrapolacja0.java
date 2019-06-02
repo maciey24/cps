@@ -10,6 +10,7 @@ import com.mycompany.cps.Punkt;
 import com.mycompany.cps.Sygnal;
 import com.mycompany.cps.syg.SygnalGenerator;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,18 +19,18 @@ import java.util.Comparator;
  * @author maciek
  */
 public class Ekstrapolacja0 implements Rekonstrukcja {
-    private Double krok;
+    private BigDecimal krok;
 
     @Override
-    public Sygnal odtworz(Sygnal s, Double krok) {
+    public Sygnal odtworz(Sygnal s, BigDecimal krok) {
         Sygnal o = new Sygnal();
         this.krok = krok;
-        Double liczbaProbekWCzasieProbkowania = (s.getList().get(1).getX() - s.getList().get(0).getX()) / krok;
+        int liczbaProbekWCzasieProbkowania = s.obliczKrokProbkowania().divide(krok).intValue();
 
-        for (int i = 0; i < s.getList().size(); i++) {
-            o.getList().add(new Punkt(s.getList().get(i).getWspolrzedne()));
+        for (int i = 0; i < s.getLiczbaProbek(); i++) {
+            o.add(new Punkt(s.getList().get(i).getWspolrzedne()));
             for (int j = 1; j < liczbaProbekWCzasieProbkowania; j++) {
-                o.getList().add(new Punkt(s.getList().get(i).getX() + (j * krok), s.getList().get(i).getY()));
+                o.add(new Punkt(s.getX(i).add(BigDecimal.valueOf(j).multiply(krok)), s.getY(i)));
             }
         }
         Comparator c = new Punkt.PunktCzasComparator();

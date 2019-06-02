@@ -10,6 +10,7 @@ import com.mycompany.cps.Punkt;
 
 import static java.lang.Math.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -23,9 +24,8 @@ public class SygSinusoidalnyWyprostowanyDwupolowkowoGenerator extends SygnalGene
     @Override
     public ArrayList<Punkt> sygnal(Parametry p) {
         ArrayList<Punkt> res = new ArrayList<>();
-        for (Double t = p.getT1(); t < (p.getT1() + p.getD()); t += p.getKrokProbkowaniaCiaglego()) {
-//            t = round(t, Double.toString(Math.floor(p.getCzestProbkCiaglego())).length(), false);
-            res.add(new Punkt(t, p.getA() * (Math.abs(sin(((2.0 * Math.PI) / p.getT()) * (t - p.getT1()))))));
+        for (BigDecimal t = p.getT1(); t.compareTo((p.getT1().add(p.getD()))) <= 0; t=t.add(p.getKrokProbkowaniaCiaglego())) {
+            res.add(new Punkt(t, p.getA().multiply(BigDecimal.valueOf(Math.abs(sin(((2.0 * Math.PI))))).divide(p.getT())).multiply(t.subtract(p.getT1()))));
         }
         return res;
     }
